@@ -15,26 +15,5 @@ class Leaf:
     def __repr__(self):
         return str(self.value)
 
-    def getParent(self):
-        return self.parent
-
-    def setParent(self, Leaf):
-        self.parent = Leaf
-
-    def getValue(self):
-        return self.value
-
-    def setValue(self, value):
-        self.value = value
-
-    def getChildren(self):
-        return self.children
-
-    def setChildren(self, children):
-        self.children = children
-
     def addChild(self, child):
         self.children += [child]
-
-    def getChild(self, index):
-        return self.children[index]
