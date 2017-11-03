@@ -1,10 +1,13 @@
 class Node:
-    
+    '''
+    Class Node
+      string kind
+    '''
     def __init__(self, kind):
         self.kind = kind
         
     def getKind(self):
-        return kind
+        return self.kind
     
-    def setKind(self):
+    def setKind(self, kind):
         self.kind = kind
