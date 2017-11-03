@@ -2,15 +2,14 @@ from Node import Node
 
 class TraitUse(Node):
     
-    '''
-       Extends Node
+    ''' Extends Node
 
-       Defines a trait usage
+        Defines a trait usage
 
-       Properties
+        Properties
 
-       traits Array<Identifier>
-       adaptations (Array<Node> | null)
+           traits Array<Identifier>
+           adaptations (Array<Node> | null)
     '''
     
     def __init__(self, kind, traits, adaptations):
