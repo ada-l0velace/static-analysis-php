@@ -1,12 +1,19 @@
+from Node import Node
+
 class Identifier(Node):
     
-    '''Class Identifier
-          string kind
-          string name
-          string resolution'''
+    '''Extends Node
+
+       Defines an identifier node
+
+       Properties
+       
+       name string
+       resolution string
+    '''
     
     def __init__(self, kind, name, resolution):
-        super(kind)
+        super().__init__(kind)
         self.name = name 
         self.resolution = resolution
         
@@ -14,7 +21,7 @@ class Identifier(Node):
         return self.name
     
     def setName(self, name):
-        self.name=name
+        self.name = name
         
     def getResolution(self):
         return self.resolution
