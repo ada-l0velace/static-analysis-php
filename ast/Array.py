@@ -1,6 +1,7 @@
-from Node import Node
+from Expression import Expression
 
-class Array(Node):
+
+class Array(Expression):
     ''' Array
 
         Extends Expression
@@ -16,10 +17,3 @@ class Array(Node):
         super().__init__(kind)
         self.items = items
         self.shortForm = shortForm
-
-    def
-
-
-
-
-

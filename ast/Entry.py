@@ -1,5 +1,6 @@
 from Node import Node
 
+
 class Entry(Node):
     
     '''
