@@ -1,46 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7d8a960f-79cb-469b-ab95-49661274bf2d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Block.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Call.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Catch.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Class.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/ClassConstant.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Closure.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Constant.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Declaration.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Do.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Echo.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Empty.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/For.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/ForEach.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Function.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Goto.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Interface.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Isset.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/List.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Method.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Namespace.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/New.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Parameters.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Print.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Program.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Property.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Retif.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Silent.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Switch.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Sys.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Throw.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Trait.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Try.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/Unset.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/UseGroup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/UseItem.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/While.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ast/if.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="7d8a960f-79cb-469b-ab95-49661274bf2d" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -390,7 +351,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1050" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
