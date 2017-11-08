@@ -3,7 +3,16 @@ class Tree:
         self.root = root
 
     def insertLeaf(self, leaf):
-        self.root.addChild(leaf)
+        if self.root == leaf.parent:
+            self.root.children += [leaf]
+        else:
+            unexplored = self.root.children
+            while unexplored != []:
+                if unexplored[0] == leaf.parent:
+                    unexplored[0].children += [leaf]
+                    return
+                else:
+                    unexplored = unexplored[1:] + unexplored[0].children
 
 
 class Leaf:
@@ -18,15 +27,3 @@ class Leaf:
 
     def __eq__(self, other):
         return self.value == other.value
-
-    def addChild(self, leaf):
-        if self == leaf.parent:
-            self.children += [leaf]
-        else:
-            unexplored = self.children
-            while unexplored != []:
-                if unexplored[0] == leaf.parent:
-                    unexplored[0].children += [leaf]
-                    return
-                else:
-                    unexplored = unexplored[1:] + unexplored[0].children
