@@ -6,9 +6,7 @@ import sys
 from Tree import Tree
 
 from expressions import *
-from fabric.fabric_expression import *
-from fabric.fabric_statement import *
-from fabric.fabric_node import *
+from fabric.fabric_all import *
 
 def get_attrs(klass):
   return [k for k in klass.__dict__.keys()
@@ -51,7 +49,7 @@ edges = []
 def get_edges(treedict, parent=None):
     for i in treedict:
         if i == 'kind' and treedict[i] in expressions:
-            a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
+            a = FactoryProducer.get_factory(treedict[i], treedict)
             #print get_attrs(a)
             print(a.kind)
             # if a.kind == 'bin':
@@ -59,9 +57,9 @@ def get_edges(treedict, parent=None):
             #print BinaryOperatorExp(treedict)
             #exit(0)
         elif i == 'kind' and treedict[i] in statements:
-          a = StatementFactoryProducer.get_factory(treedict[i], treedict)
+          a = FactoryProducer.get_factory(treedict[i], treedict)
         elif i == 'kind' and treedict[i] in nodes:
-          a = NodeFactoryProducer.get_factory(treedict[i], treedict, parent)
+          a = FactoryProducer.get_factory(treedict[i], treedict, parent)
           print(a.kind)
   
         if  type(treedict[i]) == dict:

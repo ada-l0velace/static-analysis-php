@@ -13,7 +13,7 @@ class Exp(Node):
 		expressions = ['constref', 'variable'] + literal + operations
 		for key in json:
 			if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
-				self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key],self.parent)
+				self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key],self)
 			else:	
 				if key not in ['loc', 'byref', 'curly', 'resolution']:
 					self.__dict__[key] = json[key]
@@ -39,7 +39,7 @@ class CallExp(Exp):
         super(CallExp, self).__init__(json,parent)
         self.arguments = []
         for a in json["arguments"]:
-            self.arguments += [ExpressionFactoryProducer.get_factory(a['kind'], a, parent)]
+            self.arguments += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
 
                 
 #### OPERATORS
