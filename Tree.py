@@ -65,7 +65,11 @@ class Tree:
         elif(type(node) == BlockStm):
             for child in node.children:
                 self.visit(child, pattern)
-    
+
+        elif(type(node) == WhileStm):
+            for child in node.body.children:
+                self.visit(child, pattern)
+
         elif(type(node) == CallExp):
             flow_list = []
             for param in node.arguments:
