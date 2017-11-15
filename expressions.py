@@ -21,6 +21,11 @@ class ConsrefExp(Exp):
 	"""docstring for ConsrefExp"""
 	def __init__(self, json={}):
 		super(ConsrefExp, self).__init__(json)
+
+class OffsetlookupExp(Exp):
+	"""docstring for OffsetlookupExp"""
+	def __init__(self, json={}):
+		super(OffsetlookupExp, self).__init__(json)
 		
 class VariableExp(Exp):
 	"""docstring for VariableExp"""

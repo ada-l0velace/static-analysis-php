@@ -25,23 +25,6 @@ operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
 expressions = ['constref', 'variable'] + literal + operations
 statements = ['assign', 'call']
 nodes = ['identifier']
-#print expressions
-# Convert back to JSON & print to stderr so we can verfiy that the tree is correct.
-#print(json.dumps(data, indent=4), file=sys.stderr)
-
-# # Extract tree edges from the dict
-# edges = []
-# def get_edges(treedict, parent=None):
-#     for i in treedict:
-#         if i == 'kind' and treedict[i] == 'assign':
-#             print BinaryOperatorExp(treedict)
-#             #exit(0)
-#         if  type(treedict[i]) == dict:
-#             get_edges(treedict[i], i)
-#         elif type(treedict[i]) == list:
-#             for j in treedict[i]:
-#                 get_edges(j, i)
-# #get_edges(data)
 
 #t = Tree(data)
 #for i in t.root.children:

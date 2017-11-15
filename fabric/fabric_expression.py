@@ -8,5 +8,6 @@ class ExpressionFactoryProducer(object):
         d = {'variable': expressions.VariableExp,
              'constref': expressions.ConsrefExp,
              'bin': expressions.BinaryOperatorExp,
-             'string': expressions.StringExp}
+             'string': expressions.StringExp,
+             'offsetlookup': expressions.OffsetlookupExp}
         return d[kind](json=json)
