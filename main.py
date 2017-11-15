@@ -97,4 +97,4 @@ def transverse_tree(tree):
         transverse_tree(tree.right)
 print str(t.root)
             
-transverse_tree(t.root)
+#transverse_tree(t.root)

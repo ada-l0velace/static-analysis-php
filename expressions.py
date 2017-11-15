@@ -43,7 +43,7 @@ class EncapsedExp(Exp):
     def __init__(self, json, parent):
         super(EncapsedExp, self).__init__(json,parent)
         self.value = []
-        print json
+        #print json
         for a in json["value"]:
             self.value += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
