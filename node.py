@@ -14,7 +14,6 @@
 #                         self.__dict__[key] += [i]
 #             else:
 #                 self.__dict__[key] = json[key]
-from dill.source import getsource
 class Node(object):
     def __init__(self, json, parent=None):
         self.parent = parent
