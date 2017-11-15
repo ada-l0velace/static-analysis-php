@@ -31,6 +31,9 @@ class Node(object):
         elif hasattr(self, 'left') and hasattr(self, 'right'):
         	ret += self.left.__str__(level+1)
         	ret += self.right.__str__(level+1)
+        elif hasattr(self, 'arguments'):
+        	 for arg in self.arguments:
+	            ret += arg.__str__(level+1)
         return ret
 
 class IdentifierNode(Node):
