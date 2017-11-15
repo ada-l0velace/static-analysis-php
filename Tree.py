@@ -1,8 +1,8 @@
-from node import Node
+from statements import ProgramStm
 
 class Tree:
     def __init__(self, json):
-        self.root = Node(json)
+        self.root = ProgramStm(json)
         
     # def insertLeaf(self, leaf):
     #     if self.root == None:

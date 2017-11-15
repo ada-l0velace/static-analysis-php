@@ -51,24 +51,27 @@ edges = []
 def get_edges(treedict, parent=None):
     for i in treedict:
         if i == 'kind' and treedict[i] in expressions:
-            a = ExpressionFactoryProducer.get_factory(treedict[i], treedict, parent)
+            a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
             #print get_attrs(a)
-            print(a.__dict__)
+            print(a.kind)
             # if a.kind == 'bin':
             #     print a.left.__dict__
             #print BinaryOperatorExp(treedict)
             #exit(0)
         elif i == 'kind' and treedict[i] in statements:
-          a = StatementFactoryProducer.get_factory(treedict[i], treedict, parent)
-          print(a.__dict__)
-
+          a = StatementFactoryProducer.get_factory(treedict[i], treedict)
         elif i == 'kind' and treedict[i] in nodes:
           a = NodeFactoryProducer.get_factory(treedict[i], treedict, parent)
-          print(a.__dict__)
+          print(a.kind)
   
         if  type(treedict[i]) == dict:
             get_edges(treedict[i], i)
         elif type(treedict[i]) == list:
             for j in treedict[i]:
                 get_edges(j, i)
-get_edges(data)
+#get_edges(data)
+
+def create_tree(treedict):
+  return Tree(treedict)
+
+t = create_tree(data)
