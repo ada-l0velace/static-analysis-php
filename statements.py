@@ -26,6 +26,9 @@ class AssignStm(Stm):
 class ProgramStm(BlockStm):
     def __init__(self, json, parent=None):
         super(ProgramStm, self).__init__(json, parent)
+        self.errors = []
+        for e in json["errors"]:
+            self.errors += [FactoryProducer.get_factory(e["kind"],e, self)]
 
 class SysStm(Stm):
     def __init__(self, json, parent=Node):
@@ -37,3 +40,13 @@ class SysStm(Stm):
 class EchoStm(SysStm):
     def __init__(self, json, parent=Node):
         super(EchoStm, self).__init__(json, parent)
+
+class IfStm(Stm):
+    def __init__(self, json, parent=Node):
+        super(IfStm, self).__init__(json, parent)
+        self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
+        self.body = BlockStm(json["body"], self)
+        if json["alternate"] != None:
+            self.alternate = FactoryProducer.get_factory(json["alternate"]["kind"], json["alternate"], self)
+        else:
+            self.alternate = None

@@ -9,5 +9,7 @@ class StatementFactoryProducer(object):
         d = { 'assign' : statements.AssignStm,
               'program' : statements.ProgramStm,
               'sys' : statements.SysStm,
-              'echo' : statements.EchoStm}
+              'echo' : statements.EchoStm,
+              'if' : statements.IfStm,
+        }
         return d[kind](json, parent)
