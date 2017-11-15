@@ -31,7 +31,8 @@ class Tree:
             self.visit(node.left, pattern)
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
-
+                #item = FlowItem()
+                #node.flow_list += [item]
                 node.left.flow_list += node.right.flow_list 
 
         
@@ -84,7 +85,6 @@ class Tree:
                 self.visit(param, pattern)
                 if param.tainted:
                     node.tainted = True
-                #print param.flow_list
                 flow_list += param.flow_list
             node.flow_list += flow_list
             
@@ -105,7 +105,7 @@ class Tree:
                 if node.tainted:
                     print "Warning: Tainted input reached sink."
                 
-
+                node.flow_list = flow_list
                 pattern.set_var_flow(node.name, node.flow_list)
                 print pattern.flows
         
