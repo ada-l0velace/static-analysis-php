@@ -56,6 +56,16 @@ class Tree:
                 if v.tainted:
                     node.tainted = True
                 #print v
+        elif(type(node) == IfStm):
+            for child in node.body.children:
+                self.visit(child, pattern)
+            if node.alternate:
+                self.visit(node.alternate, pattern)
+
+        elif(type(node) == BlockStm):
+            for child in node.children:
+                self.visit(child, pattern)
+    
         elif(type(node) == CallExp):
             flow_list = []
             for param in node.arguments:
