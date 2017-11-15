@@ -1,34 +1,42 @@
+from Node import Node
+
 class Tree:
-    def __init__(self, root):
-        self.root = root
+    def __init__(self, json):
+        self.root = Node(json)
+        
+    # def insertLeaf(self, leaf):
+    #     if self.root == None:
+    #         self.root = leaf
+    #     elif self.root == leaf.parent:
+    #         self.root.children += [leaf]
+    #     else:
+    #         unexplored = self.root.children
+    #         while unexplored != []:
+    #             if unexplored[0] == leaf.parent:
+    #                 unexplored[0].children += [leaf]
+    #                 return
+    #             else:
+    #                 unexplored = unexplored[1:] + unexplored[0].children
 
-    def insertLeaf(self, leaf):
-        if self.root == leaf.parent:
-            self.root.children += [leaf]
-        else:
-            unexplored = self.root.children
-            while unexplored != []:
-                if unexplored[0] == leaf.parent:
-                    unexplored[0].children += [leaf]
-                    return
-                else:
-                    unexplored = unexplored[1:] + unexplored[0].children
-
-    def removeLeaf(self, leaf):
-        unexplored = self.root.children
-        while unexplored != []:
-            if leaf == unexplored[0]:
-                unexplored[0].parent.children.remove(leaf)
-            else:
-                unexplored = unexplored[1:] + unexplored[0].children
+    # def removeLeaf(self, leaf):
+    #     unexplored = self.root.children
+    #     while unexplored != []:
+    #         if leaf == unexplored[0]:
+    #             unexplored[0].parent.children.remove(leaf)
+    #         else:
+    #             unexplored = unexplored[1:] + unexplored[0].children
 
 
-class Leaf:
+    
+    
+# class Leaf:
 
-    def __init__(self, value, parent=None, children=[]):
-        self.parent = parent
-        self.value = value
-        self.children = list(children)
+#     def __init__(self, value, parent=None):
+#         self.parent = parent
+#         self.node = node
 
-    def __eq__(self, other):
-        return self.value == other.value
+#     def __eq__(self, other):
+#         if other == None:
+#             return False
+#         return self.value == other.value
+
