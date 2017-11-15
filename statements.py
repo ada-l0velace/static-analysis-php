@@ -50,3 +50,10 @@ class IfStm(Stm):
             self.alternate = FactoryProducer.get_factory(json["alternate"]["kind"], json["alternate"], self)
         else:
             self.alternate = None
+
+class WhileStm(Stm):
+    def __init__(self, json, parent=Node):
+        super(WhileStm, self).__init__(json, parent)
+        self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
+        self.body = BlockStm(json["body"], self)
+        
