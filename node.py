@@ -37,9 +37,12 @@ class Node(object):
             for val in self.values:
                 ret += val.__str__(level+1)
         elif hasattr(self, 'body'):
+
             ret += self.test.__str__(level+1)
             for val in self.body.children:
                 ret += val.__str__(level+1)
+            if hasattr(self, 'alternate') and self.alternate != None:
+                ret += self.alternate.__str__(level+1)
             
 
         return ret

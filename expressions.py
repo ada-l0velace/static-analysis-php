@@ -1,5 +1,5 @@
 from node import Node
-from fabric.fabric_expression import *
+from fabric.fabric_all import *
 import inspect
 
 class Exp(Node):
@@ -14,7 +14,7 @@ class Exp(Node):
         expressions = ['constref', 'variable', 'offsetlookup', 'call', 'encapsed'] + literal + operations
         for key in json:
             if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
-                self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key],self)
+                self.__dict__[key] = FactoryProducer.get_factory(json[key]['kind'], json[key],self)
             else:   
                 if key not in ['loc', 'byref', 'curly', 'resolution']:
                     self.__dict__[key] = json[key]
@@ -45,7 +45,7 @@ class EncapsedExp(Exp):
         self.values = []
         #print json
         for a in json["value"]:
-            self.values += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
+            self.values += [FactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
         return self.kind
 
@@ -54,7 +54,7 @@ class CallExp(Exp):
         super(CallExp, self).__init__(json,parent)
         self.arguments = []
         for a in json["arguments"]:
-            self.arguments += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
+            self.arguments += [FactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
         return self.what['name']
                 
