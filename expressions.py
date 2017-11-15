@@ -13,17 +13,9 @@ class Exp(object):
 			if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
 				self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key])
 			else:	
-				if key not in ['loc','json', 'byref', 'curly', 'resolution']:
+				if key not in ['loc', 'byref', 'curly', 'resolution']:
 					self.__dict__[key] = json[key]
 
-
-class VariableExp(Exp):
-	"""docstring for VariableExp"""
-	def __init__(self, name=None, value=None, json={}):
-		super(VariableExp, self).__init__(json)
-		if json == {} and name !=None and value!= None:
-			self.name = name
-			self.value = value
 
 class ConsrefExp(Exp):
 	"""docstring for ConsrefExp"""
@@ -40,16 +32,18 @@ class EntryPointsExp(Exp):
 	def __init__(self, arg):
 		super(EntryPointsExp, self).__init__()
 		self.arg = arg
-		
 
+#### OPERATORS
+		
 class BinaryOperatorExp(Exp):
 	"""docstring for BinaryOperator"""
 	def __init__(self, json):
 		super(BinaryOperatorExp, self).__init__(json)
+
+#### LITERALS
 
 class StringExp(Exp):
 	"""docstring for StringExp"""
 	def __init__(self, json):
 		super(StringExp, self).__init__(json)
 
-		
