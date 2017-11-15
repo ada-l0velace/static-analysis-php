@@ -64,8 +64,7 @@ class BinaryOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
         super(BinaryOperatorExp, self).__init__(json,parent)
-    def __repr__(self):
-        return self.operator
+
 
 #### LITERALS
 
