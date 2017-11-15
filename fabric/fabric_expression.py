@@ -9,5 +9,6 @@ class ExpressionFactoryProducer(object):
              'constref': expressions.ConsrefExp,
              'bin': expressions.BinaryOperatorExp,
              'string': expressions.StringExp,
-             'offsetlookup': expressions.OffsetlookupExp}
+             'offsetlookup': expressions.OffsetlookupExp,
+             'call' : expressions.CallExp}
         return d[kind](json=json)

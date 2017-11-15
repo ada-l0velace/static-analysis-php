@@ -22,9 +22,26 @@ data = json.loads(s)
 
 literal = ['string', 'integer']
 operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
-expressions = ['constref', 'variable'] + literal + operations
-statements = ['assign', 'call']
+expressions = ['constref', 'variable', 'call'] + literal + operations
+statements = ['assign']
 nodes = ['identifier']
+#print expressions
+# Convert back to JSON & print to stderr so we can verfiy that the tree is correct.
+#print(json.dumps(data, indent=4), file=sys.stderr)
+
+# # Extract tree edges from the dict
+# edges = []
+# def get_edges(treedict, parent=None):
+#     for i in treedict:
+#         if i == 'kind' and treedict[i] == 'assign':
+#             print BinaryOperatorExp(treedict)
+#             #exit(0)
+#         if  type(treedict[i]) == dict:
+#             get_edges(treedict[i], i)
+#         elif type(treedict[i]) == list:
+#             for j in treedict[i]:
+#                 get_edges(j, i)
+# #get_edges(data)
 
 #t = Tree(data)
 #for i in t.root.children:
@@ -36,8 +53,9 @@ def get_edges(treedict, parent=None):
         if i == 'kind' and treedict[i] in expressions:
             a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
             #print get_attrs(a)
-            if a.kind == 'bin':
-                print a.left.__dict__
+            print(a.__dict__)
+            # if a.kind == 'bin':
+            #     print a.left.__dict__
             #print BinaryOperatorExp(treedict)
             #exit(0)
         elif i == 'kind' and treedict[i] in statements:

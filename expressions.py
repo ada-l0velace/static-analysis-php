@@ -38,6 +38,14 @@ class EntryPointsExp(Exp):
 		super(EntryPointsExp, self).__init__()
 		self.arg = arg
 
+class CallExp(Exp):
+    def __init__(self, json):
+        super(CallExp, self).__init__(json)
+        self.arguments = []
+        for a in json["arguments"]:
+            self.arguments += [VariableExp(a)]
+
+                
 #### OPERATORS
 		
 class BinaryOperatorExp(Exp):

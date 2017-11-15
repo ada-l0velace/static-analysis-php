@@ -6,6 +6,5 @@ import statements
 class StatementFactoryProducer(object):
     @staticmethod
     def get_factory(kind, json, parent):
-        d = { 'assign' : statements.AssignStm,
-              'call' : statements.CallStm}
+        d = { 'assign' : statements.AssignStm}
         return d[kind](json, parent)
