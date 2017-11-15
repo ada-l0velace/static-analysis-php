@@ -22,7 +22,15 @@ class Tree:
             self.visit(node.right, pattern)
             node.left.tainted = node.right.tainted
             self.visit(node.left, pattern)
-            
+            #print node.left,node.left.tainted
+
+        elif(type(node) == BinaryOperatorExp):
+            self.visit(node.right, pattern)
+            node.left.tainted = node.right.tainted
+            self.visit(node.left, pattern)
+            if node.right.tainted or node.left.tainted:
+                node.tainted = True
+        
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
                 pattern.set_taintness(node.name, node.tainted)
