@@ -14,7 +14,7 @@
 #                         self.__dict__[key] += [i]
 #             else:
 #                 self.__dict__[key] = json[key]
-
+from dill.source import getsource
 class Node(object):
     def __init__(self, json, parent=None):
         self.parent = parent
@@ -32,8 +32,12 @@ class Node(object):
             ret += self.left.__str__(level+1)
             ret += self.right.__str__(level+1)
         elif hasattr(self, 'arguments'):
-             for arg in self.arguments:
+            for arg in self.arguments:
                 ret += arg.__str__(level+1)
+        elif hasattr(self, 'values'):
+            for val in self.values:
+                ret += val.__str__(level+1)
+
         return ret
 
 class IdentifierNode(Node):

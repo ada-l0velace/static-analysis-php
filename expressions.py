@@ -1,5 +1,6 @@
 from node import Node
 from fabric.fabric_expression import *
+import inspect
 
 class Exp(Node):
     """docstring for Exp"""
@@ -17,7 +18,6 @@ class Exp(Node):
             else:   
                 if key not in ['loc', 'byref', 'curly', 'resolution']:
                     self.__dict__[key] = json[key]
-
 
 class ConsrefExp(Exp):
     """docstring for ConsrefExp"""
@@ -42,12 +42,12 @@ class EncapsedExp(Exp):
     """docstring for EncapsedExp"""
     def __init__(self, json, parent):
         super(EncapsedExp, self).__init__(json,parent)
-        self.value = []
+        self.values = []
         #print json
         for a in json["value"]:
-            self.value += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
+            self.values += [ExpressionFactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
-        return self.kind+','+str(self.value)
+        return self.kind
 
 class CallExp(Exp):
     def __init__(self, json, parent):
@@ -75,4 +75,5 @@ class StringExp(Exp):
         super(StringExp, self).__init__(json,parent)
     def __repr__(self):
         return self.value
+
 
