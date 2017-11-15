@@ -10,7 +10,7 @@ class Exp(Node):
 	def parse_from_json(self, json):
 		literal = ['string', 'integer']
 		operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
-		expressions = ['constref', 'variable'] + literal + operations
+		expressions = ['constref', 'variable', 'offsetlookup', 'call'] + literal + operations
 		for key in json:
 			if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
 				self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key],self)

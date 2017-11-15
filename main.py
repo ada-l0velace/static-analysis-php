@@ -49,18 +49,19 @@ edges = []
 def get_edges(treedict, parent=None):
     for i in treedict:
         if i == 'kind' and treedict[i] in expressions:
-            a = FactoryProducer.get_factory(treedict[i], treedict)
+            a = FactoryProducer.get_factory(treedict[i], treedict, parent)
             #print get_attrs(a)
-            print(a.kind)
+            print a.__dict__
             # if a.kind == 'bin':
             #     print a.left.__dict__
             #print BinaryOperatorExp(treedict)
             #exit(0)
         elif i == 'kind' and treedict[i] in statements:
-          a = FactoryProducer.get_factory(treedict[i], treedict)
+            a = FactoryProducer.get_factory(treedict[i], treedict, parent)
+            print a.__dict__
         elif i == 'kind' and treedict[i] in nodes:
-          a = FactoryProducer.get_factory(treedict[i], treedict, parent)
-          print(a.kind)
+            a = FactoryProducer.get_factory(treedict[i], treedict, parent)
+            print a.__dict__
   
         if  type(treedict[i]) == dict:
             get_edges(treedict[i], i)
@@ -73,3 +74,6 @@ def create_tree(treedict):
   return Tree(treedict)
 
 t = create_tree(data)
+
+for child in t.root.children:
+    print child.__dict__

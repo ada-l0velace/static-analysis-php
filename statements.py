@@ -17,6 +17,7 @@ class BlockStm(Stm):
 class AssignStm(Stm):
     def __init__(self, json, parent):
         super(AssignStm, self).__init__(json, parent)
+        #print json["right"]['kind']
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self) 
 
