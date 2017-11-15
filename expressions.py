@@ -9,7 +9,7 @@ class Exp(Node):
         self.parse_from_json(json)
 
     def parse_from_json(self, json):
-        literal = ['string', 'integer']
+        literal = ['string', 'integer', 'number']
         operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
         expressions = ['constref', 'variable', 'offsetlookup', 'call', 'encapsed'] + literal + operations
         for key in json:
@@ -75,4 +75,10 @@ class StringExp(Exp):
     def __repr__(self):
         return self.value
 
+class NumberExp(Exp):
+    """docstring for NumberExp"""
+    def __init__(self, json, parent):
+        super(NumberExp, self).__init__(json,parent)
+    def __repr__(self):
+        return self.value
 
