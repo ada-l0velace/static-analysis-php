@@ -8,18 +8,6 @@ class Exp(Node):
         super(Exp, self).__init__(json,parent)
         #self.parent = parent    
         #self.parse_from_json(json)
-        self.flow_list = []
-
-    def parse_from_json(self, json):
-        literal = ['string', 'integer', 'number']
-        operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
-        expressions = ['constref', 'variable', 'offsetlookup', 'call', 'encapsed'] + literal + operations
-        for key in json:
-            if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
-                self.__dict__[key] = FactoryProducer.get_factory(json[key]['kind'], json[key],self)
-            else:   
-                if key not in ['loc', 'byref', 'curly', 'resolution']:
-                    self.__dict__[key] = json[key]
 
 class ConsrefExp(Exp):
     """docstring for ConsrefExp"""
@@ -45,6 +33,7 @@ class VariableExp(Exp):
         self.name = json["name"]
     def __repr__(self):
         return '$'+self.name
+
 class EncapsedExp(Exp):
     """docstring for EncapsedExp"""
     def __init__(self, json, parent):

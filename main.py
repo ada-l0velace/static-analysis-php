@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     t = create_tree(data)
     t.visit(t.root, Pattern('SQL injection', 
-        ['$_GET','$_POST','$_COOKIE'], 
+        ['_GET','_POST','_COOKIE'], 
         ['mysql_escape_string','mysql_real_escape_string','mysql_real_escape_string'],
         ['mysql_query','mysql_unbuffered_query','mysql_db_query']))
     #print str(t.root)
