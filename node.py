@@ -17,6 +17,8 @@
 class Node(object):
     def __init__(self, json, parent=None):
         self.parent = parent
+        self.tainted = False
+        self.flow_list = []
         for key in json:
             if type(json[key]) != dict:
                 if type(json[key]) != list:

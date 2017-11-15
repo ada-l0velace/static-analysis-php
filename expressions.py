@@ -5,8 +5,10 @@ import inspect
 class Exp(Node):
     """docstring for Exp"""
     def __init__(self, json=None, parent=None):
-        self.parent = parent    
-        self.parse_from_json(json)
+        super(Exp, self).__init__(json,parent)
+        #self.parent = parent    
+        #self.parse_from_json(json)
+        self.flow_list = []
 
     def parse_from_json(self, json):
         literal = ['string', 'integer', 'number']
@@ -28,14 +30,19 @@ class OffsetlookupExp(Exp):
     """docstring for OffsetlookupExp"""
     def __init__(self, json, parent):
         super(OffsetlookupExp, self).__init__(json,parent)
+        
+        self.name = json['what']['name']
+        self.offset = json['offset']['value']
+        #self.name = self.what['name']
     
     def __repr__(self):
-        return repr(self.what)+ '['+repr(self.offset)+']'
+        return repr('$'+self.name)+ '['+repr(self.offset)+']'
 
 class VariableExp(Exp):
     """docstring for VariableExp"""
     def __init__(self, json, parent):
         super(VariableExp, self).__init__(json,parent)
+        self.name = json["name"]
     def __repr__(self):
         return '$'+self.name
 class EncapsedExp(Exp):
@@ -53,10 +60,12 @@ class CallExp(Exp):
     def __init__(self, json, parent):
         super(CallExp, self).__init__(json,parent)
         self.arguments = []
+        self.name = json['what']['name']
+        #self.name = self.what['name']
         for a in json["arguments"]:
             self.arguments += [FactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
-        return self.what['name']
+        return self.name
                 
 #### OPERATORS
         
@@ -64,7 +73,8 @@ class BinaryOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
         super(BinaryOperatorExp, self).__init__(json,parent)
-
+        self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
+        self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self) 
     def __repr__(self):
         return self.type
 
