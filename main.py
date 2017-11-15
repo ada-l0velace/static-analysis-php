@@ -51,7 +51,7 @@ edges = []
 def get_edges(treedict, parent=None):
     for i in treedict:
         if i == 'kind' and treedict[i] in expressions:
-            a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
+            a = ExpressionFactoryProducer.get_factory(treedict[i], treedict, parent)
             #print get_attrs(a)
             print(a.kind)
             # if a.kind == 'bin':
