@@ -10,5 +10,6 @@ class ExpressionFactoryProducer(object):
              'bin': expressions.BinaryOperatorExp,
              'string': expressions.StringExp,
              'offsetlookup': expressions.OffsetlookupExp,
-             'call' : expressions.CallExp}
+             'call' : expressions.CallExp,
+             'encapsed' : expressions.EncapsedExp}
         return d[kind](json=json,parent=parent)

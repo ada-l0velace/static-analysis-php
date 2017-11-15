@@ -24,16 +24,16 @@ class Node(object):
                     self.__dict__[key] = json[key]
 
     def __str__(self, level=0):
-        ret = "\t"*level+repr(self.kind)+"\n"
+        ret = "\t"*level+repr(self)+"\n"
         if hasattr(self, 'children'):
-	        for child in self.children:
-	            ret += child.__str__(level+1)
+            for child in self.children:
+                ret += child.__str__(level+1)
         elif hasattr(self, 'left') and hasattr(self, 'right'):
-        	ret += self.left.__str__(level+1)
-        	ret += self.right.__str__(level+1)
+            ret += self.left.__str__(level+1)
+            ret += self.right.__str__(level+1)
         elif hasattr(self, 'arguments'):
-        	 for arg in self.arguments:
-	            ret += arg.__str__(level+1)
+             for arg in self.arguments:
+                ret += arg.__str__(level+1)
         return ret
 
 class IdentifierNode(Node):

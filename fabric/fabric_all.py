@@ -9,7 +9,7 @@ class FactoryProducer(object):
     def get_factory(kind, json, parent):
         literal = ['string', 'integer']
         operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
-        expressions = ['constref', 'variable', 'call', 'offsetlookup'] + literal + operations
+        expressions = ['constref', 'variable', 'call', 'offsetlookup', 'encapsed'] + literal + operations
         statements = ['assign', 'program']
         nodes = ['identifier']
         if kind in expressions:
