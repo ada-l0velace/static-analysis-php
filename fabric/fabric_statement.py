@@ -11,6 +11,7 @@ class StatementFactoryProducer(object):
               'sys' : statements.SysStm,
               'echo' : statements.EchoStm,
               'if' : statements.IfStm,
-              'while' : statements.WhileStm
+              'while' : statements.WhileStm,
+              'block' : statements.BlockStm
         }
         return d[kind](json, parent)
