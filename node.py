@@ -36,6 +36,10 @@ class Node(object):
         elif hasattr(self, 'values'):
             for val in self.values:
                 ret += val.__str__(level+1)
+        elif hasattr(self, 'body'):
+            for val in self.body.children:
+                ret += val.__str__(level+1)
+
 
         return ret
 
