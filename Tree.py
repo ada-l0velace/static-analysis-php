@@ -3,6 +3,25 @@ from statements import ProgramStm
 class Tree:
     def __init__(self, json):
         self.root = ProgramStm(json)
+
+    def find_all_kind(self,kind):
+        a = []
+        for child in self.root.children:
+            if child.kind == kind:
+                a.append(child)
+        return a
+
+    def find_all_sinks(self,node, res):
+        if hasattr(node, 'kind'):
+            if node.kind == 'call':
+                res += [node]
+        if hasattr(node, 'children'):
+            for child in self.root.children:
+                self.find_all_sinks(child, res)
+        elif hasattr(node, 'left') and hasattr(node, 'right'):
+            self.find_all_sinks(node.left, res)
+            self.find_all_sinks(node.right, res)
+        return res
         
     # def insertLeaf(self, leaf):
     #     if self.root == None:
