@@ -6,6 +6,7 @@ class Exp(Node):
     """docstring for Exp"""
     def __init__(self, json=None, parent=None):
         super(Exp, self).__init__(json,parent)
+        #self.loc = json['loc']
         #self.parent = parent    
         #self.parse_from_json(json)
 
@@ -21,6 +22,7 @@ class OffsetlookupExp(Exp):
         
         self.name = json['what']['name']
         self.offset = json['offset']['value']
+
         #self.name = self.what['name']
     
     def __repr__(self):

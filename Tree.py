@@ -21,6 +21,7 @@ class Tree:
         elif type(node) == AssignStm:
             self.visit(node.right, pattern)
             node.left.tainted = node.right.tainted
+            node.left.flow_list += node.right.flow_list
             self.visit(node.left, pattern)
             #print node.left,node.left.tainted
 
@@ -30,10 +31,13 @@ class Tree:
             self.visit(node.left, pattern)
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
+
         
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
                 pattern.set_taintness(node.name, node.tainted)
+                pattern.set_var_flow(node.name, node.flow_list)
+                #node.flow_list += [item]
             else:
                 node.tainted = pattern.get_var_taintness(node.name)
                 node.flow_list = pattern.get_var_flow(node.name)
@@ -54,7 +58,9 @@ class Tree:
             for v in node.values:
                 self.visit(v, pattern)
                 if v.tainted:
-                    node.tainted = True
+                    node.tainted = v.tainted
+                node.flow_list += v.flow_list
+            pattern.set_var_flow(node.kind, node.flow_list)
                 #print v
         elif(type(node) == IfStm):
             for child in node.body.children:
@@ -76,8 +82,8 @@ class Tree:
                 self.visit(param, pattern)
                 if param.tainted:
                     node.tainted = True
-            flow_list += param.flow_list
-            node.flow_list = flow_list
+                flow_list += param.flow_list
+            node.flow_list += flow_list
             
             if pattern.is_sanitization(node.name):
                 node.tainted = False
@@ -97,6 +103,8 @@ class Tree:
                     print "Warning: Tainted input reached sink."
                 
                 node.flow_list = flow_list
+                pattern.set_var_flow(node.name, node.flow_list)
+                print pattern.flows
         
                 #print flow_list
     # def insertLeaf(self, leaf):

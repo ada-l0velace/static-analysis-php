@@ -22,6 +22,9 @@ class Pattern(object):
     def set_taintness(self, name, t):
         self.vars[name] = t
 
+    def set_var_flow(self, var, flow):
+        self.flows[var] = flow
+
     def get_var_flow(self, var):
         return self.flows.get(var, list())
 
