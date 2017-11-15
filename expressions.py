@@ -1,14 +1,20 @@
+from fabric.fabric_expression import *
+
 class Exp(object):
 	"""docstring for Exp"""
-	def __init__(self, json=None):
-		print json
-		if json:
-			self.json = json
-			self.parse_from_json()
+	def __init__(self, json=None):	
+		self.parse_from_json(json)
 
-	def parse_from_json(self):
-		for key in self.json:
-			self.__dict__[key] = self.json[key]
+	def parse_from_json(self, json):
+		literal = ['string', 'integer']
+		operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
+		expressions = ['constref', 'variable'] + literal + operations
+		for key in json:
+			if type(json[key]) == dict and json[key].has_key('kind') and json[key]['kind'] in expressions:
+				self.__dict__[key] = ExpressionFactoryProducer.get_factory(json[key]['kind'], json[key])
+			else:	
+				if key not in ['loc','json', 'byref', 'curly', 'resolution']:
+					self.__dict__[key] = json[key]
 
 
 class VariableExp(Exp):
@@ -18,6 +24,16 @@ class VariableExp(Exp):
 		if json == {} and name !=None and value!= None:
 			self.name = name
 			self.value = value
+
+class ConsrefExp(Exp):
+	"""docstring for ConsrefExp"""
+	def __init__(self, json={}):
+		super(ConsrefExp, self).__init__(json)
+		
+class VariableExp(Exp):
+	"""docstring for VariableExp"""
+	def __init__(self, name=None, value=None, json={}):
+		super(VariableExp, self).__init__(json)
 
 class EntryPointsExp(Exp):
 	"""docstring for EntryPointsExp"""
@@ -29,11 +45,11 @@ class EntryPointsExp(Exp):
 class BinaryOperatorExp(Exp):
 	"""docstring for BinaryOperator"""
 	def __init__(self, json):
-		super(BinaryOperatorExp, self).__init__()
-		self.operator = json['operator']
-		self.left = VariableExp(json=json['left'])
-		if json['right'] == 'offsetlookup':
-			print json['right']['what']['name']
-			#self.right = json['right']
-		#print self.right
-		#print self.left['name']#,self.right['kind']
+		super(BinaryOperatorExp, self).__init__(json)
+
+class StringExp(Exp):
+	"""docstring for StringExp"""
+	def __init__(self, json):
+		super(StringExp, self).__init__(json)
+
+		
