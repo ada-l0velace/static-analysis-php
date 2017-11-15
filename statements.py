@@ -42,3 +42,6 @@ class AssignStm(Stm):
         self.left = ExpressionFactoryProducer.get_factory(json["left"]["kind"], json["left"]) 
         self.right = ExpressionFactoryProducer.get_factory(json["right"]["kind"], json["right"]) 
 
+class ProgramStm(BlockStm):
+    def __init__(self, json, parent=None):
+        super(ProgramStm, self).__init__(json, parent)

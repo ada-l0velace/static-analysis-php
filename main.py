@@ -23,7 +23,7 @@ data = json.loads(s)
 literal = ['string', 'integer']
 operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
 expressions = ['constref', 'variable', 'call'] + literal + operations
-statements = ['assign']
+statements = ['assign', 'program']
 nodes = ['identifier']
 #print expressions
 # Convert back to JSON & print to stderr so we can verfiy that the tree is correct.
@@ -53,18 +53,18 @@ def get_edges(treedict, parent=None):
         if i == 'kind' and treedict[i] in expressions:
             a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
             #print get_attrs(a)
-            print(a.__dict__)
+            print(a.kind)
             # if a.kind == 'bin':
             #     print a.left.__dict__
             #print BinaryOperatorExp(treedict)
             #exit(0)
         elif i == 'kind' and treedict[i] in statements:
           a = StatementFactoryProducer.get_factory(treedict[i], treedict, parent)
-          print (a.__dict__)
+          print(a.kind)
 
         elif i == 'kind' and treedict[i] in nodes:
           a = NodeFactoryProducer.get_factory(treedict[i], treedict, parent)
-          print (a.__dict__)
+          print(a.kind)
   
         if  type(treedict[i]) == dict:
             get_edges(treedict[i], i)
