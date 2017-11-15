@@ -16,9 +16,13 @@
 #                 self.__dict__[key] = json[key]
 
 class Node(object):
-    def __init__(self, parent=None, json):
+    def __init__(self, json, parent=None):
         self.parent = parent
         self.json = json
         for key in json:
             if type(json[key]) != dict and type(json[key]) != list:
                 self.__dict__[key] = json[key]
+
+class Identifier(Node):
+    def __init__(self, json, parent=None):
+        super().__init__(parent,json)

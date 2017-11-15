@@ -7,7 +7,8 @@ from Tree import Tree
 
 from expressions import *
 from fabric.fabric_expression import *
-
+from fabric.fabric_statement import *
+from fabric.fabric_node import *
 
 def get_attrs(klass):
   return [k for k in klass.__dict__.keys()
@@ -27,6 +28,8 @@ data = json.loads(s)
 literal = ['string', 'integer']
 operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
 expressions = ['constref', 'variable'] + literal + operations
+statements = ['assign', 'call']
+nodes = ['identifier']
 #print expressions
 # Convert back to JSON & print to stderr so we can verfiy that the tree is correct.
 #print(json.dumps(data, indent=4), file=sys.stderr)
@@ -45,7 +48,7 @@ expressions = ['constref', 'variable'] + literal + operations
 #                 get_edges(j, i)
 # #get_edges(data)
 
-t = Tree(data)
+#t = Tree(data)
 #for i in t.root.children:
 #    print i.value.__dict__()
 # Extract tree edges from the dict
@@ -55,9 +58,17 @@ def get_edges(treedict, parent=None):
         if i == 'kind' and treedict[i] in expressions:
             a = ExpressionFactoryProducer.get_factory(treedict[i], treedict)
             #print get_attrs(a)
-            print a.__dict__
+            print (a.__dict__)
             #print BinaryOperatorExp(treedict)
             #exit(0)
+        elif i == 'kind' and treedict[i] in statements:
+          a = StatementFactoryProducer.get_factory(treedict[i], treedict, parent)
+          print (a.__dict__)
+
+        elif i == 'kind' and treedict[i] in nodes:
+          a = NodeFactoryProducer.get_factory(treedict[i], treedict, parent)
+          print (a.__dict__)
+  
         if  type(treedict[i]) == dict:
             get_edges(treedict[i], i)
         elif type(treedict[i]) == list:
