@@ -67,7 +67,7 @@ class Tree:
                 self.visit(child, pattern)
 
         elif(type(node) == WhileStm):
-            for child in node.body.children:
+            for child in node.body.children[::-1]:
                 self.visit(child, pattern)
 
         elif(type(node) == CallExp):
