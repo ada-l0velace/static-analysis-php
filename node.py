@@ -23,6 +23,16 @@ class Node(object):
                 if type(json[key]) != list:
                     self.__dict__[key] = json[key]
 
+    def __str__(self, level=0):
+        ret = "\t"*level+repr(self.kind)+"\n"
+        if hasattr(self, 'children'):
+	        for child in self.children:
+	            ret += child.__str__(level+1)
+        elif hasattr(self, 'left') and hasattr(self, 'right'):
+        	ret += self.left.__str__(level+1)
+        	ret += self.right.__str__(level+1)
+        return ret
+
 class IdentifierNode(Node):
     def __init__(self, json, parent=None):
         super(IdentifierNode, self).__init__(json, parent)
