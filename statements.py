@@ -39,8 +39,8 @@ class FunctionStm(BlockStm):
 class AssignStm(Stm):
     def __init__(self, json, parent):
         super(AssignStm, self).__init__(json, parent)
-        self.left = ExpressionFactoryProducer.get_factory(json["left"]["kind"], json["left"], parent) 
-        self.right = ExpressionFactoryProducer.get_factory(json["right"]["kind"], json["right"], parent) 
+        self.left = ExpressionFactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
+        self.right = ExpressionFactoryProducer.get_factory(json["right"]["kind"], json["right"], self) 
 
 class ProgramStm(BlockStm):
     def __init__(self, json, parent=None):
