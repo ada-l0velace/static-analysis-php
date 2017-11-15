@@ -75,13 +75,15 @@ def create_tree(treedict):
 
 t = create_tree(data)
 
+
 def transverse_tree(tree):
     print tree.__dict__
     if hasattr(tree, 'children'):
         for child in tree.children:
-            print child.__dict__
-            transverse_tree(child.left)
-            transverse_tree(child.right)
+            transverse_tree(child)
+    elif hasattr(tree, 'arguments'):
+        for child in tree.arguments:
+            transverse_tree(child)
     elif hasattr(tree, 'left') and hasattr(tree, 'right'): # binary
         transverse_tree(tree.left)
         transverse_tree(tree.right)
