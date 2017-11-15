@@ -11,7 +11,7 @@ class BlockStm(Stm):
         super(BlockStm, self).__init__(json, parent)
         self.children = []
         for val in json["children"]:
-            self.children += [FactoryProducer.get_factory(val["kind"],val, self)] #TODO
+            self.children += [FactoryProducer.get_factory(val["kind"],val, self)]
 
             
 class AssignStm(Stm):
@@ -26,3 +26,14 @@ class AssignStm(Stm):
 class ProgramStm(BlockStm):
     def __init__(self, json, parent=None):
         super(ProgramStm, self).__init__(json, parent)
+
+class SysStm(Stm):
+    def __init__(self, json, parent=Node):
+        super(SysStm, self).__init__(json, parent)
+        self.arguments = []
+        for arguments in json["arguments"]:
+            self.arguments += [FactoryProducer.get_factory(arguments["kind"],arguments, self)]
+        
+class EchoStm(SysStm):
+    def __init__(self, json, parent=Node):
+        super(EchoStm, self).__init__(json, parent)

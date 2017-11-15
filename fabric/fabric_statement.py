@@ -7,5 +7,7 @@ class StatementFactoryProducer(object):
     @staticmethod
     def get_factory(kind, json, parent):
         d = { 'assign' : statements.AssignStm,
-              'program' : statements.ProgramStm}
+              'program' : statements.ProgramStm,
+              'sys' : statements.SysStm,
+              'echo' : statements.EchoStm}
         return d[kind](json, parent)
