@@ -49,7 +49,7 @@ class Tree:
             if pattern.is_input(node.name):
                 node.tainted = True
                 item = FlowItem()
-                item.name = node.name
+                item.name = '$'+node.name+'[\''+node.offset+'\']'
                 item.type = FlowItem.INPUT_TYPE
                 node.flow_list += [item]
             else:
