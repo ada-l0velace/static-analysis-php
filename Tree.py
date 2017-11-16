@@ -71,9 +71,9 @@ class Tree:
             if node.alternate:
                 self.visit(node.alternate, pattern)
 
-        elif(type(node) == BlockStm):
-            for child in node.children:
-                self.visit(child, pattern)
+        #elif(type(node) == BlockStm):
+        #    for child in node.children:
+        #        self.visit(child, pattern)
 
         elif(type(node) == WhileStm):
             for child in node.body.children:
