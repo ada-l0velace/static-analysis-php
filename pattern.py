@@ -1,15 +1,20 @@
+import StringIO
+
 class Pattern(object):
     """docstring for Pattern"""
-    def __init__(self, name, inputs, sanitizations, sinks):
+    def __init__(self, name=None, inputs=None, sanitizations=None, sinks=None, patterns=None):
         super(Pattern, self).__init__()
         self.vars = {}
         self.id = None
-        self.name = name
-        self.inputs = inputs
-        self.sanitizations = sanitizations
-        self.sinks = sinks
         self.flows = {}
-    
+        if not patterns:
+            self.name = name
+            self.inputs = inputs
+            self.sanitizations = sanitizations
+            self.sinks = sinks
+        else:
+            self.parse_patterns(patterns)
+
     def is_sink(self, s):
         return s in self.sinks
 
@@ -29,9 +34,20 @@ class Pattern(object):
         return self.flows.get(var, list())
 
     def get_var_taintness(self, name):
-        return self.vars.get(name, True)
+        return self.vars.get(name, False)
 
-
+    def parse_patterns(self, pattern_string):
+        buf = StringIO.StringIO(pattern_string)
+        self.name = buf.readline().strip()
+        for i in range(3):
+            list_objects = buf.readline().strip().split(',')
+            if i == 0:
+                self.inputs = list_objects
+            elif i == 1:
+                self.sanitizations = list_objects
+            elif i == 2:
+                self.sinks = list_objects
+            
 class FlowItem(object):
 
     INPUT_TYPE = "Input"

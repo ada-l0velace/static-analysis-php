@@ -1,0 +1,14 @@
+Cross Site Scripting
+_GET,_POST,_COOKIE,_REQUEST,_FILES,_SERVERS
+htmlentities,htmlspecialchars,strip_tags,urlencode
+echo,print,printf,die,error,exit,file_put_contents,file_get_contents
+
+SQL injection
+_GET,_POST,_COOKIE,_REQUEST
+mysql_escape_string,mysql_real_escape_string,mysqli_stmt_bind_param,mysqli::escape_string,mysqli::real_escape_string,mysqli_stmt::bind_param
+mysql_query,mysql_unbuffered_query,mysql_db_query,mysqli_query,mysqli_real_query,mysqli_master_query,mysqli_multi_query,mysqli_stmt_execute,mysqli::query,mysqli::multi_query,mysqli::real_query
+
+SQL injection
+_GET,_POST,_COOKIE,_REQUEST
+pg_escape_string,pg_escape_bytea
+pg_query,pg_send_query

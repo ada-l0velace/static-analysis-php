@@ -33,6 +33,7 @@ class ProgramStm(BlockStm):
 class SysStm(Stm):
     def __init__(self, json, parent=Node):
         super(SysStm, self).__init__(json, parent)
+        self.name = json["kind"]
         self.arguments = []
         for arguments in json["arguments"]:
             self.arguments += [FactoryProducer.get_factory(arguments["kind"],arguments, self)]

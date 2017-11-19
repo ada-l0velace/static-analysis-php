@@ -5,6 +5,7 @@ import json
 import sys
 from Tree import Tree
 from pattern import *
+import StringIO
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
@@ -17,9 +18,19 @@ if __name__ == '__main__':
         return Tree(treedict)
 
     t = create_tree(data)
-    t.visit(t.root, Pattern('SQL injection', 
-        ['_GET','_POST','_COOKIE'], 
-        ['mysql_escape_string','mysql_real_escape_string','mysql_real_escape_string'],
-        ['mysql_query','mysql_unbuffered_query','mysql_db_query']))
+    patterns = ''
+    with open('patterns/patts', 'r') as f:
+        patterns = f.read()
+    
+    #print patterns
+    pattern = ''
+    patts = StringIO.StringIO(patterns)
+    for i in range(1,len(patterns.split('\n'))+1):
+        pattern += patts.readline()
+        if i % 4 == 0:
+            print '---------------------------------------'
+            t.visit(t.root, Pattern(patterns=pattern))
+            pattern = ''
+            patts.readline()
     #print str(t.root)
     
