@@ -93,18 +93,21 @@ class Tree:
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
+
             if node.valid:
+                line += 1
                 for child in node.body.children:
                     line += 1
+                    self.code_lines.append(str(child))
                     self.visit(child, pattern, line)
-            if node.alternate:
-                line += 1
-                self.visit(node.alternate, pattern, line)
-
+                if node.alternate:
+                    line += 1
+                    self.visit(node.alternate, pattern, line)        
 
 
         elif(type(node) == BlockStm):
             for child in node.children:
+                self.code_lines.append(str(child))
                 line += 1
                 self.visit(child, pattern, line)
 
@@ -156,51 +159,10 @@ class Tree:
                 OKGREEN = '\033[92m'
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
+                #print line
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
-                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(node)) + ENDC
+                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
                     #print pattern.flows
                 else:
-                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
-                #for key in flows.keys():
-
-                #print_flow_list(flow_list, self.code_lines)
-
-                
-                #print flow_list
-    # def insertLeaf(self, leaf):
-    #     if self.root == None:
-    #         self.root = leaf
-    #     elif self.root == leaf.parent:
-    #         self.root.children += [leaf]
-    #     else:
-    #         unexplored = self.root.children
-    #         while unexplored != []:
-    #             if unexplored[0] == leaf.parent:
-    #                 unexplored[0].children += [leaf]
-    #                 return
-    #             else:
-    #                 unexplored = unexplored[1:] + unexplored[0].children
-
-    # def removeLeaf(self, leaf):
-    #     unexplored = self.root.children
-    #     while unexplored != []:
-    #         if leaf == unexplored[0]:
-    #             unexplored[0].parent.children.remove(leaf)
-    #         else:
-    #             unexplored = unexplored[1:] + unexplored[0].children
-
-
-    
-    
-# class Leaf:
-
-#     def __init__(self, value, parent=None):
-#         self.parent = parent
-#         self.node = node
-
-#     def __eq__(self, other):
-#         if other == None:
-#             return False
-#         return self.value == other.value
-
+                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
