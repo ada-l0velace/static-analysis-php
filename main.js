@@ -22,7 +22,7 @@ var parser = new engine({
 //var tokens = parser.tokenGetAll('<?php echo "Hello World";');
  
 // Load a static file (Note: this file should exist on your computer)
-var myArray = [0,12,13]
+var myArray = [0,12,13,14]
 myArray.forEach(function(value){
   var phpFile = fs.readFileSync(util.format('samples/slice%d.php', value));
  

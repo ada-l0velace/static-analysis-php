@@ -146,7 +146,7 @@ class Tree:
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
                 for key in flows.keys():
-                    print print_flow_list(flows[key], key)    
+                    print_flow_list(flows[key], key)    
                         
 
                 
