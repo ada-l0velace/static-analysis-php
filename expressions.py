@@ -32,6 +32,7 @@ class VariableExp(Exp):
     """docstring for VariableExp"""
     def __init__(self, json, parent):
         super(VariableExp, self).__init__(json,parent)
+        #print json
         self.name = json["name"]
     def __repr__(self):
         return '$'+self.name
@@ -73,7 +74,8 @@ class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
         super(ParenthesisOperatorExp, self).__init__(json,parent)
-        self.inner = FactoryProducer.get_factory(json['inner']['kind'], json, self)
+        self.name = self.kind
+        self.inner = FactoryProducer.get_factory(json['inner']['kind'], json['inner'], self)
     def __repr__(self):
         return self.type
 
