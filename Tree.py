@@ -41,7 +41,10 @@ class Tree:
                 #node.flow_list += [item]
                 node.left.flow_list += node.right.flow_list 
 
-        
+        elif(type(node) == ParenthesisOperatorExp):
+            self.visit(node.inner, pattern)
+            node.tainted = node.inner.tainted
+            node.flow_list += node.inner.flow_list
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
                 pattern.set_taintness(node.name, node.tainted)
@@ -113,7 +116,7 @@ class Tree:
                 item = FlowItem()
                 item.name = node.name
                 item.type = FlowItem.SINK_TYPE
-                node.flow_list.append(item)
+                flow_list.append(item)
                 #print node.tainted
 
                 node.flow_list = flow_list
@@ -132,14 +135,19 @@ class Tree:
                                 flows[flow_key] += [flow]
                         else:
                             flows[flow_key] = [flow]
-                
+                FAIL = '\033[91m'
+                OKGREEN = '\033[92m'
+                WARNING = '\033[93m'
+                ENDC = '\033[0m'
                 if node.tainted:
-                    print "Warning: Tainted input reached sink."
-                    print "%s vulnerability found" % pattern.name
+
+                    print WARNING+"Warning: Tainted input reached sink."+ENDC
+                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(node)) + ENDC
                     #print pattern.flows
                 else:
-                    print "No %s vulnerabilities found" % pattern.name
-                print flows    
+                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
+                for key in flows.keys():
+                    print_flow_list(flows[key], key)    
                         
 
                 
