@@ -10,10 +10,6 @@ class Exp(Node):
     def __init__(self, json=None, parent=None):
         super(Exp, self).__init__(json, parent)
 
-        #self.loc = json['loc']
-        #self.parent = parent
-        # self.parse_from_json(json)
-
 
 class ConsrefExp(Exp):
     """docstring for ConsrefExp"""

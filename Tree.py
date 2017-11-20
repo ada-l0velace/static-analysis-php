@@ -258,25 +258,17 @@ class Tree:
                 OKGREEN = '\033[92m'
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
-                # print line
-                # print len(self.code_lines)
-                #print flow_list
                 if node.tainted:
-                    #print pattern.vars
                     print WARNING + "Warning: Tainted input reached sink." + ENDC
-                    # print self.code_lines, node.line_start, node.line_end
                     try:
                         print FAIL + "%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                     except IndexError:
                         print 'ERROR'
                         print FAIL + "%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start - 1])) + ENDC
                     print_flow_list(flow_list, self.code_lines)
-                    # print pattern.flows
                 else:
-                    # print self.code_lines
-                    # print node.line_start
+
                     print OKGREEN + "No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                     print_flow_list(flow_list, self.code_lines)
-                #print 'FIM DA CALL CRL', node.tainted
             if type(node) == ExitStm:
                 self.over = True
