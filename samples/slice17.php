@@ -1,6 +1,6 @@
 <?php
 
-$a = "abc"
+$a = "abc";
 if ($a == "abc"){
    $nis=$_POST['nis'];
 }
