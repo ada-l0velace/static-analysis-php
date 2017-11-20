@@ -190,7 +190,7 @@ class BooleanExp(Exp):
         super(BooleanExp, self).__init__(json, parent)
 
     def is_valid(self):
-        return self.get_value()
+        return not self.get_value()
 
     def get_value(self):
         return bool(self.value)
