@@ -93,7 +93,13 @@ class IfStm(Stm):
             return self.body.is_infinite(node)
 
     def __repr__(self):
-        return 'if ('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    } ' + 'elseif ('+str(self.alternate.test)+') {\n\t' + str(self.alternate.body) + '\n    }' if self.alternate  else str(self.body)
+        if self.alternate and self.alternate.test:
+            else_str = '    else' + str(self.alternate)
+        elif self.alternate:
+            else_str = '    else {\n\t' + str(self.alternate) + '\n    }'
+        else:
+            else_str = ''
+        return 'if ('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n' + else_str
             
 
 class WhileStm(Stm):

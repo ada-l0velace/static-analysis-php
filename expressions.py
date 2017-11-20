@@ -166,7 +166,7 @@ class StringExp(Exp):
         super(StringExp, self).__init__(json,parent)
     
     def __repr__(self):
-        return self.value
+        return '"'+self.value+'"'
 
     def get_value(self):
         return self.value

@@ -99,7 +99,7 @@ class Tree:
         
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
-                print node.flow_list
+                #print node.flow_list
                 pattern.set_taintness(node.name, node.tainted)
                 pattern.set_var_flow(node.name, node.flow_list)
             else:
@@ -223,13 +223,13 @@ class Tree:
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
                 #print line
-                print len(self.code_lines)
+                #print len(self.code_lines)
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
-                    print self.code_lines, node.line_start, node.line_end
+                    #print self.code_lines, node.line_start, node.line_end
                     print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                     #print pattern.flows
                 else:
-                    print self.code_lines
+                    #print self.code_lines
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                 print print_flow_list(flow_list, self.code_lines)
