@@ -35,4 +35,11 @@ class IdentifierNode(Node):
 
 class ErrorNode(Node):
     def __init__(self, json, parent=None):
-        super(IdentifierNode, self).__init__(json, parent)
+        super(ErrorNode, self).__init__(json, parent)
+
+class BreakNode(Node):
+    def __init__(self, json, parent=None):
+        super(BreakNode, self).__init__(json, parent)
+        if json["level"] != None:
+            self.level = Number(json["level"], self)
+

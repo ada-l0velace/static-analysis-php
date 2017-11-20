@@ -1,4 +1,4 @@
-from node import Node
+from node import *
 from expressions import *
 from fabric.fabric_all import *
 
@@ -81,6 +81,8 @@ class IfStm(Stm):
             self.alternate = None
             
     def is_valid(self):
+        if type(self.test) == BreakNode:
+            return False
         if self.test.is_valid():
             return True
         else:
