@@ -88,8 +88,10 @@ class Tree:
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
+            line += 1
             for child in node.body.children:
                 line += 1
+                self.code_lines.append(str(child))
                 self.visit(child, pattern, line)
             if node.alternate:
                 line += 1
@@ -97,6 +99,7 @@ class Tree:
         
         elif(type(node) == BlockStm):
             for child in node.children:
+                self.code_lines.append(str(child))
                 line += 1
                 self.visit(child, pattern, line)
         elif(type(node) == WhileStm):
@@ -142,12 +145,14 @@ class Tree:
                 OKGREEN = '\033[92m'
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
+                #print line
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
-                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(node)) + ENDC
+                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
                     #print pattern.flows
                 else:
-                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
+                    print line-2
+                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
                 #for key in flows.keys():
 
                 #print_flow_list(flow_list, self.code_lines)
