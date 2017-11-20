@@ -115,7 +115,7 @@ class Tree:
                 item = FlowItem()
                 item.name = node.name
                 item.type = FlowItem.SINK_TYPE
-                node.flow_list.append(item)
+                flow_list.append(item)
                 #print node.tainted
 
                 node.flow_list = flow_list
@@ -145,7 +145,8 @@ class Tree:
                     #print pattern.flows
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
-                print flows    
+                for key in flows.keys():
+                    print print_flow_list(flows[key], key)    
                         
 
                 

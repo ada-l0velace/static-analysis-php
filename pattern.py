@@ -1,5 +1,14 @@
 import StringIO
 
+class bcolors:
+    OKBLUE = '\033[44m'
+    RED = '\033[41m'
+    GREEN = '\033[42m'
+    WHITE = '\033[37m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
 class Pattern(object):
     """docstring for Pattern"""
     def __init__(self, name=None, inputs=None, sanitizations=None, sinks=None, patterns=None):
@@ -47,7 +56,39 @@ class Pattern(object):
                 self.sanitizations = list_objects
             elif i == 2:
                 self.sinks = list_objects
-            
+
+def flow_has_inputs(flow_list):
+    for item in flow_list:
+        if item.type == FlowItem.INPUT_TYPE:
+            return True
+    return False
+
+def print_flow_list(flow_list, name):
+    def get_line_key(item):
+        return item.line
+
+    def select_types(l, type):
+        for item in l:
+            if item.type == type:
+                format_string = "{%s %s}"
+                if item.type == FlowItem.INPUT_TYPE:
+                    format_string = bcolors.WHITE + bcolors.RED + format_string + bcolors.ENDC
+                elif item.type == FlowItem.SANITIZATION_TYPE:
+                    format_string = bcolors.WHITE + bcolors.GREEN + format_string + bcolors.ENDC
+                else:
+                    format_string = bcolors.OKBLUE + format_string + bcolors.ENDC
+                format_string += "\n    %s"
+                print format_string % (item.type, item.name, '-1')
+
+    if not flow_has_inputs(flow_list):
+        return
+    sorted_flow_list = sorted(flow_list, key=get_line_key)
+    #print name
+    print "****************************** START FLOW (%s) *****************************************" % name
+    select_types(sorted_flow_list, FlowItem.INPUT_TYPE)
+    select_types(sorted_flow_list, FlowItem.SANITIZATION_TYPE)
+    select_types(sorted_flow_list, FlowItem.SINK_TYPE)
+    print "******************************* END FLOW (%s) ******************************************" % name            
 class FlowItem(object):
 
     INPUT_TYPE = "Input"
