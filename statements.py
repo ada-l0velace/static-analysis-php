@@ -123,7 +123,7 @@ class ExitStm(SysStm):
     def __init__(self, json, parent=None):
         super(ExitStm, self).__init__(json, parent)
         if json["status"] != None:
-            self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
+            self.arguments = [FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)]
 
     def __repr__(self):
-		return self.name +'('+ str(self.status) + ')'
+		return self.name +'('+ str(''.join([str(x) for x in self.arguments])) + ')'

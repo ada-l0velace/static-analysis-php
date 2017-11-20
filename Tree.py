@@ -31,6 +31,7 @@ class Tree:
             #print 'ASSIGNS'
             node.right.tainted = False
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
+            print node.right, line
             self.visit(node.right, pattern, line)
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             #print node.right,line
@@ -43,15 +44,14 @@ class Tree:
             #print node.left,node.left.tainted
 
         elif(type(node) == BinaryOperatorExp):
+
             self.visit(node.right, pattern, line)
+            
             node.left.tainted = node.right.tainted
             self.visit(node.left, pattern, line)
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
-                #item = FlowItem()
-                #node.flow_list += [item]
                 node.left.flow_list = node.right.flow_list 
-
         elif(type(node) == ParenthesisOperatorExp):
             self.visit(node.inner, pattern, line)
             node.tainted = node.inner.tainted
@@ -75,9 +75,11 @@ class Tree:
                 item.type = FlowItem.INPUT_TYPE 
                 item.line = line
                 node.flow_list = [item]
-                #pattern.set_taintness(node.name, node.tainted)
-                #pattern.set_var_flow(node.name, node.flow_list)
-
+                pattern.set_taintness(node.name, node.tainted)
+                pattern.set_var_flow(node.name, node.flow_list)
+            else:
+                node.tainted = pattern.get_var_taintness(node.name)
+                node.flow_list = pattern.get_var_flow(node.name)
         elif(type(node) == EncapsedExp):
             #print 'ENCAPSED'
             c = 0

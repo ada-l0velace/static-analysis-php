@@ -8,7 +8,7 @@ file_put_contents("File.txt", $a);
 file_get_contents("File.txt");
 file_get_contents('http://www.google.com/');
 if ($a == "a") {
-   exit($a);
+   exit(0);
 }
 die($a);
 ?>
