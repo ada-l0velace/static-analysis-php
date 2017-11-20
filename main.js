@@ -22,14 +22,14 @@ var parser = new engine({
 //var tokens = parser.tokenGetAll('<?php echo "Hello World";');
  
 // Load a static file (Note: this file should exist on your computer)
-var myArray = [0]
+var myArray = [0,12,13]
 myArray.forEach(function(value){
   var phpFile = fs.readFileSync(util.format('samples/slice%d.php', value));
  
   // Log out results
   //console.log( 'Eval parse:', eval );
   //console.log( 'Tokens parse:', tokens );
-  console.log(JSON.stringify(parser.parseCode(phpFile, {
+  var content = JSON.stringify(parser.parseCode(phpFile, {
     parser: {
       debug: false, 
       locations: false,
@@ -43,5 +43,12 @@ myArray.forEach(function(value){
       asp_tags: false,
       short_tags: false
     }
-  }) ));
+  }) );
+  fs.writeFile(util.format('samples/slice%d.json', value), content, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+  }); 
 });
