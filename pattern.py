@@ -14,6 +14,7 @@ class Pattern(object):
     def __init__(self, name=None, inputs=None, sanitizations=None, sinks=None, patterns=None):
         super(Pattern, self).__init__()
         self.vars = {}
+        self.values = {}
         self.id = None
         self.flows = {}
         if not patterns:
@@ -32,6 +33,9 @@ class Pattern(object):
 
     def is_input(self, i):
         return i in self.inputs
+
+    def set_value(self, name, v):
+        self.values[name] = v
 
     def set_taintness(self, name, t):
         self.vars[name] = t

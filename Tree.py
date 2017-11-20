@@ -5,6 +5,7 @@ from pattern import *
 class Tree:
     def __init__(self, json):
         self.root = ProgramStm(json)
+        self.over = False
         self.code_lines = []
         for child in self.root.children:
             self.code_lines.append(str(child))
@@ -18,6 +19,8 @@ class Tree:
 
     def visit(self,node, pattern, line):
         #print 'puts'
+        if self.over == True:
+            return
         if type(node) == ProgramStm:
             #print node.__dict__
             for child in node.children:
@@ -32,7 +35,9 @@ class Tree:
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             #print node.right,line
             node.left.tainted = node.right.tainted
-            node.left.flow_list = node.right.flow_list
+            node.left.flow_list += node.right.flow_list
+            node.left.value = node.right.value
+            pattern.set_value(node.left.name, node.left.value)
             self.visit(node.left, pattern, line)
             #print node.left.tainted,node.left
             #print node.left,node.left.tainted
@@ -88,24 +93,29 @@ class Tree:
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
-            line += 1
-            for child in node.body.children:
+
+            if node.valid:
                 line += 1
-                self.code_lines.append(str(child))
-                self.visit(child, pattern, line)
-            if node.alternate:
-                line += 1
-                self.visit(node.alternate, pattern, line)
-        
+                for child in node.body.children:
+                    line += 1
+                    self.code_lines.append(str(child))
+                    self.visit(child, pattern, line)
+                if node.alternate:
+                    line += 1
+                    self.visit(node.alternate, pattern, line)        
         elif(type(node) == BlockStm):
             for child in node.children:
                 self.code_lines.append(str(child))
                 line += 1
                 self.visit(child, pattern, line)
         elif(type(node) == WhileStm):
-            for child in node.body.children:
-                line += 1
-                self.visit(child, pattern, line+1)
+            if node.valid:
+                for child in node.body.children:
+                    line += 1
+                    self.visit(child, pattern, line+1)
+            if node.infinite:
+                print "Entered an infinite loop"
+                self.over = True
 
         elif type(node) == CallExp or issubclass(type(node),SysStm):
             #print node
@@ -152,45 +162,3 @@ class Tree:
                     #print pattern.flows
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
-                #for key in flows.keys():
-
-                #print_flow_list(flow_list, self.code_lines)
-
-                
-                #print flow_list
-    # def insertLeaf(self, leaf):
-    #     if self.root == None:
-    #         self.root = leaf
-    #     elif self.root == leaf.parent:
-    #         self.root.children += [leaf]
-    #     else:
-    #         unexplored = self.root.children
-    #         while unexplored != []:
-    #             if unexplored[0] == leaf.parent:
-    #                 unexplored[0].children += [leaf]
-    #                 return
-    #             else:
-    #                 unexplored = unexplored[1:] + unexplored[0].children
-
-    # def removeLeaf(self, leaf):
-    #     unexplored = self.root.children
-    #     while unexplored != []:
-    #         if leaf == unexplored[0]:
-    #             unexplored[0].parent.children.remove(leaf)
-    #         else:
-    #             unexplored = unexplored[1:] + unexplored[0].children
-
-
-    
-    
-# class Leaf:
-
-#     def __init__(self, value, parent=None):
-#         self.parent = parent
-#         self.node = node
-
-#     def __eq__(self, other):
-#         if other == None:
-#             return False
-#         return self.value == other.value
-
