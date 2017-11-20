@@ -151,7 +151,6 @@ class Tree:
                     print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
                     #print pattern.flows
                 else:
-                    print line-2
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
                 #for key in flows.keys():
 
