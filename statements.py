@@ -55,10 +55,16 @@ class SysStm(Stm):
     def super_constructor(self, json, parent):
         super(SysStm, self).__init__(json, parent)
 
+    def __repr__(self):
+        return self.name + ','.join([x.__str__() for x in self.arguments])
+
         
 class EchoStm(SysStm):
     def __init__(self, json, parent=None):
         super(EchoStm, self).__init__(json, parent)
+
+    def __repr__(self):
+		return self.name + '('+ ','.join([str(x) for x in self.arguments]) + ')'
 
 class IfStm(Stm):
     def __init__(self, json, parent=None):
@@ -119,3 +125,5 @@ class ExitStm(SysStm):
         if json["status"] != None:
             self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
 
+    def __repr__(self):
+		return self.name +'('+ str(self.status) + ')'
