@@ -12,7 +12,12 @@ class BlockStm(Stm):
         self.children = []
         for val in json["children"]:
             self.children += [FactoryProducer.get_factory(val["kind"],val, self)]
-
+    def is_used(self, node):
+        for c in self.children:
+            if (c.is_used(node)) == True:
+                return True
+        return False
+            
             
 class AssignStm(Stm):
     def __init__(self, json, parent):
@@ -20,8 +25,14 @@ class AssignStm(Stm):
         #print json["right"]['kind']
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
+        
     def __repr__(self):
-        return self.kind 
+        return self.kind
+
+    def is_used(self, node):
+        if self.left.name == node.name:
+            return True
+        return False
 
 class ProgramStm(BlockStm):
     def __init__(self, json, parent=None):
@@ -57,11 +68,20 @@ class IfStm(Stm):
         else:
             self.alternate = None
 
+    def is_used(self, node):
+        return self.body.is_used(node)
+
 class WhileStm(Stm):
     def __init__(self, json, parent=None):
         super(WhileStm, self).__init__(json, parent)
         self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
         self.body = BlockStm(json["body"], self)
+        self.valid = True
+        self.valid = self.is_used(self.test.left)
+
+    def is_used(self, node):
+        if self.valid:
+            return self.body.is_used(node)
         
 class PrintStm(SysStm):
     def __init__(self, json, parent=None):

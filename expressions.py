@@ -9,7 +9,7 @@ class Exp(Node):
         #self.loc = json['loc']
         #self.parent = parent    
         #self.parse_from_json(json)
-
+        
 class ConsrefExp(Exp):
     """docstring for ConsrefExp"""
     def __init__(self, json, parent):
@@ -27,7 +27,7 @@ class OffsetlookupExp(Exp):
     
     def __repr__(self):
         return repr('$'+self.name)+ '['+repr(self.offset)+']'
-
+    
 class VariableExp(Exp):
     """docstring for VariableExp"""
     def __init__(self, json, parent):
@@ -35,7 +35,7 @@ class VariableExp(Exp):
         #print json
         self.name = json["name"]
     def __repr__(self):
-        return '$'+self.name
+        return '$'+self.name        
 
 class EncapsedExp(Exp):
     """docstring for EncapsedExp"""

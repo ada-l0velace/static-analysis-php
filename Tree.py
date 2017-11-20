@@ -86,8 +86,9 @@ class Tree:
                 self.visit(child, pattern)
 
         elif(type(node) == WhileStm):
-            for child in node.body.children:
-                self.visit(child, pattern)
+            if node.valid:
+                for child in node.body.children:
+                    self.visit(child, pattern)
 
         elif type(node) == CallExp or issubclass(type(node),SysStm):
             #print node
