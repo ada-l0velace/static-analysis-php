@@ -58,3 +58,15 @@ class WhileStm(Stm):
         self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
         self.body = BlockStm(json["body"], self)
         
+class PrintStm(SysStm):
+    def __init__(self, json, parent=Node):
+        super(PrintStm, self).__init__(json, parent)
+
+class PrintStm(SysStm):
+    def __init__(self, json, parent=Node):
+        super(PrintStm, self).__init__(json, parent)
+
+class DieStm(SysStm):
+    def __init__(self, json, parent=Node):
+        super(PrintStm, self).__init__(json, parent)
+        self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)

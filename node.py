@@ -52,3 +52,7 @@ class Node(object):
 class IdentifierNode(Node):
     def __init__(self, json, parent=None):
         super(IdentifierNode, self).__init__(json, parent)
+
+class ErrorNode(Node):
+    def __init__(self, json, parent=None):
+        super(IdentifierNode, self).__init__(json, parent)
