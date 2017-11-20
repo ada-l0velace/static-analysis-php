@@ -237,7 +237,7 @@ class Tree:
                 item.type = FlowItem.SANITIZATION_TYPE
                 node.flow_list += [item]
                 pattern.set_var_flow(node.name, node.flow_list)
-                print str(node.flow_list) + 'wtfdwedwdwedwed'
+                
 
             # print node.name, node.tainted,pattern.is_sanitization(node.name), pattern.sanitizations
 
