@@ -91,7 +91,6 @@ class Tree:
 
         elif type(node) == CallExp or issubclass(type(node),SysStm):
             #print node
-            print "Got Here"
             #print 'CALLLS'
             flow_list = []
             for param in node.arguments:

@@ -66,6 +66,7 @@ class WhileStm(Stm):
 class PrintStm(SysStm):
     def __init__(self, json, parent=None):
         super(PrintStm, self).super_constructor(json, parent)
+        self.name = json["kind"]
         self.arguments = [FactoryProducer.get_factory(json["arguments"]["kind"], json["arguments"], self)]
         
 class ExitStm(SysStm):
