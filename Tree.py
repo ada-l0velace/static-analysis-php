@@ -14,32 +14,33 @@ class Tree:
                 a.append(child)
         return a
 
-    def visit(self,node, pattern):
+    def visit(self,node, pattern, line):
         #print 'puts'
         if self.over == True:
             return
         if type(node) == ProgramStm:
             #print node.__dict__
             for child in node.children:
-                self.visit(child, pattern)
+                line += 1
+                self.visit(child, pattern, line)
         elif type(node) == AssignStm:
             #print 'ASSIGNS'
             node.right.tainted = False
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
-            self.visit(node.right, pattern)
+            self.visit(node.right, pattern, line)
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             node.left.tainted = node.right.tainted
             node.left.flow_list += node.right.flow_list
             node.left.value = node.right.value
             pattern.set_value(node.left.name, node.left.value)
-            self.visit(node.left, pattern)
+            self.visit(node.left, pattern, line)
             #print node.left.tainted,node.left
             #print node.left,node.left.tainted
 
         elif(type(node) == BinaryOperatorExp):
-            self.visit(node.right, pattern)
+            self.visit(node.right, pattern, line)
             node.left.tainted = node.right.tainted
-            self.visit(node.left, pattern)
+            self.visit(node.left, pattern, line)
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
                 #item = FlowItem()
@@ -47,7 +48,7 @@ class Tree:
                 node.left.flow_list += node.right.flow_list 
 
         elif(type(node) == ParenthesisOperatorExp):
-            self.visit(node.inner, pattern)
+            self.visit(node.inner, pattern, line)
             node.tainted = node.inner.tainted
             node.flow_list += node.inner.flow_list
         elif(type(node) == VariableExp):
@@ -66,6 +67,7 @@ class Tree:
                 item = FlowItem()
                 item.name = '$'+node.name+'[\''+node.offset+'\']'
                 item.type = FlowItem.INPUT_TYPE
+                item.line = line
                 node.flow_list += [item]
                 #pattern.set_taintness(node.name, node.tainted)
                 #pattern.set_var_flow(node.name, node.flow_list)
@@ -74,7 +76,7 @@ class Tree:
             #print 'ENCAPSED'
             c = 0
             for v in node.values:
-                self.visit(v, pattern)
+                self.visit(v, pattern, line)
                 if v.tainted:
                     c += 1
                     node.tainted = v.tainted
@@ -86,18 +88,20 @@ class Tree:
         elif(type(node) == IfStm):
             if node.valid:
                 for child in node.body.children:
-                    self.visit(child, pattern)
+                    line += 1
+                    self.visit(child, pattern, line)
                 if node.alternate:
-                    self.visit(node.alternate, pattern)
-
+                    line += 1
+                    self.visit(node.alternate, pattern, line)
         elif(type(node) == BlockStm):
             for child in node.children:
-                self.visit(child, pattern)
-
+                line += 1
+                self.visit(child, pattern, line)
         elif(type(node) == WhileStm):
             if node.valid:
                 for child in node.body.children:
-                    self.visit(child, pattern)
+                    line += 1
+                    self.visit(child, pattern, line+1)
             if node.infinite:
                 print "Entered an infinite loop"
                 self.over = True
@@ -107,7 +111,7 @@ class Tree:
             #print 'CALLLS'
             flow_list = []
             for param in node.arguments:
-                self.visit(param, pattern)
+                self.visit(param, pattern, line)
                 if param.tainted:
                     node.tainted = True
                 flow_list += param.flow_list
@@ -117,6 +121,7 @@ class Tree:
                 pattern.set_taintness(node.name, False)
                 item = FlowItem()
                 item.name = node.name
+                item.line = line
                 item.type = FlowItem.SANITIZATION_TYPE
                 node.flow_list += [item]
             #print node.name, node.tainted,pattern.is_sanitization(node.name), pattern.sanitizations
@@ -125,6 +130,7 @@ class Tree:
                 item = FlowItem()
                 item.name = node.name
                 item.type = FlowItem.SINK_TYPE
+                item.line = line
                 flow_list.append(item)
                 #print node.tainted
 
@@ -149,15 +155,13 @@ class Tree:
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
                 if node.tainted:
-
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
                     print FAIL+"%s vulnerability found in %s" % (pattern.name, str(node)) + ENDC
                     #print pattern.flows
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
                 for key in flows.keys():
-                    print_flow_list(flows[key], key)    
-                        
+                    print_flow_list(flows[key], key)
 
                 
                 #print flow_list

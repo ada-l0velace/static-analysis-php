@@ -85,11 +85,15 @@ class BinaryOperatorExp(Exp):
     def is_valid(self):
         if self.type == '==':
             return self.left.value == self.right.value
-        if self.type == '<=':
-            return self.left.value == self.right.value
-        if self.type == '>=':
-            return self.left.value == self.right.value
-            
+        elif self.type == '<=':
+            return self.left.value <= self.right.value
+        elif self.type == '>=':
+            return self.left.value >= self.right.value            
+        elif self.type == '>':
+            return self.left.value >= self.right.value            
+        elif self.type == '<':
+            return self.left.value >= self.right.value
+        
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
