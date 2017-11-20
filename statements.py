@@ -29,7 +29,7 @@ class AssignStm(Stm):
         #print json["right"]['kind']
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
-        self.left.value = self.right.value
+        self.left.value = self.right.get_value()
         
     def __repr__(self):
         return str(self.left)+self.operator+str(self.right)
@@ -106,7 +106,7 @@ class WhileStm(Stm):
         Bexp = ["==", ">=", "<=", "!=", "<", ">"]
         if self.is_valid():
             if type(self.test) == NumberExp:
-                if self.test.value == 1:
+                if self.test.get_value() == 1:
                     return True
             elif type(self.test) == BinaryOperatorExp and self.test.type in Bexp:
                 if self.body.is_infinite(self.test.left):
