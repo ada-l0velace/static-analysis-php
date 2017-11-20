@@ -8,6 +8,9 @@ class Tree:
         self.over = False
         self.code_lines = []
         self.code_lines_cal(self.root)
+        exit(0)
+        #print self.code_lines
+        #self.code_lines[::-1]
 
     def find_all_kind(self,kind):
         a = []
@@ -17,26 +20,41 @@ class Tree:
         return a
 
     def code_lines_cal(self, node):
-        if type(node) == ProgramStm:
-            #print node.__dict__
-            for child in node.children:
-                self.code_lines.append(child)
-                self.code_lines_cal(child)
-        elif(type(node) == IfStm):
-            for child in node.body.children:
-                self.code_lines.append(str(child))
-                self.code_lines_cal(child)
-            if node.alternate:
-                self.code_lines_cal(node.alternate)        
-        elif(type(node) == BlockStm):
-            for child in node.children:
-                self.code_lines.append(str(child))
-                self.code_lines_cal(child)
+        if node:
+            if type(node) == ProgramStm:
+                #print node.__dict__
+                for child in node.children:
+                    for i in range(child.line_start, child.line_end+1):
+                        self.code_lines.append(str(child))
+                    self.code_lines_cal(child)
+            if type(node) == IfStm:
+                self.code_lines.append(node.alternate)
+                self.code_lines_cal(node.alternate)
 
-        elif(type(node) == WhileStm):
-            for child in node.body.children:
-                self.code_lines.append(str(child))
-                self.code_lines_cal(child)
+
+        #elif(type(node) == IfStm):
+
+            #print self.code_lines, node.test.line_start, node.test.line_end, 'QLWOWDOQWL'
+            #for i in range(node.test.line_start, node.test.line_end+1):
+                #print i
+                #self.code_lines.append(str(node.test))
+            #for child in node.body.children:
+                #for i in range(child.line_start, child.line_end+1):
+                #    self.code_lines.append(str(child))
+                #self.code_lines_cal(child)
+            #if node.alternate:
+            #    self.code_lines_cal(node.alternate)        
+        #elif(type(node) == BlockStm):
+        #    for child in node.children:
+                #for i in range(child.line_start, child.line_end+1):
+                #    self.code_lines.append(str(child))
+        #        self.code_lines_cal(child)
+
+        #elif(type(node) == WhileStm):
+        #    for child in node.body.children:
+        #        for i in range(child.line_start, child.line_end+1):
+        #            self.code_lines.append(str(child))
+        #        self.code_lines_cal(child)
 
 
     def visit(self,node, pattern, line):
@@ -51,7 +69,6 @@ class Tree:
                 
         elif type(node) == AssignStm:
             #print 'ASSIGNS'
-            print node
             node.right.tainted = False
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
             #print node.right, line
@@ -61,6 +78,7 @@ class Tree:
             node.left.tainted = node.right.tainted
             node.left.flow_list = node.right.flow_list
             node.left.value = node.right.value
+            #print node.right.flow_list
             pattern.set_value(node.left.name, node.left.value)
             self.visit(node.left, pattern, line)
             #print node.left.tainted,node.left
@@ -82,6 +100,7 @@ class Tree:
         
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
+                print node.flow_list
                 pattern.set_taintness(node.name, node.tainted)
                 pattern.set_var_flow(node.name, node.flow_list)
             else:
@@ -101,7 +120,7 @@ class Tree:
                 item = FlowItem()
                 item.name = '$'+node.name+'[\''+node.offset+'\']'
                 item.type = FlowItem.INPUT_TYPE 
-                item.line = line
+                item.line = node.line_start
                 node.flow_list = [item]
                 pattern.set_taintness(node.name, node.tainted)
                 pattern.set_var_flow(node.name, node.flow_list)
@@ -111,17 +130,19 @@ class Tree:
         elif(type(node) == EncapsedExp):
             #print 'ENCAPSED'
             c = 0
-            if len(node.flow_list) > 0:
-                node.flow_list[0].line = line 
+            
             for v in node.values:
                 self.visit(v, pattern, line)
                 if v.tainted:
                     c += 1
                     node.tainted = v.tainted
                 #print v.flow_list, 'lol'
-                node.flow_list += v.flow_list
+                node.flow_list += v.flow_list 
             if c == 0:
                 node.tainted = False
+            #else:
+            if len(node.flow_list) > 0:
+                node.flow_list[0].line = node.line_start
 
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
@@ -177,7 +198,7 @@ class Tree:
                 pattern.set_taintness(node.name, False)
                 item = FlowItem()
                 item.name = node.name
-                item.line = line
+                item.line = node.line_start
                 item.type = FlowItem.SANITIZATION_TYPE
                 node.flow_list += [item]
 
@@ -187,7 +208,7 @@ class Tree:
                 item = FlowItem()
                 item.name = node.name
                 item.type = FlowItem.SINK_TYPE
-                item.line = line
+                item.line = node.line_start
                 flow_list.append(item)
                 #print node.tainted
 
@@ -200,10 +221,13 @@ class Tree:
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
                 #print line
+                print len(self.code_lines)
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
-                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
+                    print self.code_lines, node.line_start, node.line_end
+                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start-2])) + ENDC
                     #print pattern.flows
                 else:
-                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
+                    print self.code_lines
+                    print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                 print print_flow_list(flow_list, self.code_lines)

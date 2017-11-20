@@ -1,5 +1,4 @@
 <?php
-
 $a=$_POST['username'];
 print($a);
 printf("%s",$a);

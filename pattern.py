@@ -85,7 +85,7 @@ def print_flow_list(flow_list, parsed_lines):
                 else:
                     format_string = bcolors.OKBLUE + format_string + bcolors.ENDC
                 format_string += "\n    %s"
-                print format_string % (item.type, item.name, parsed_lines[item.line-2])
+                print format_string % (item.type, item.name, parsed_lines[item.line])
 
     if not flow_has_inputs(flow_list):
         return

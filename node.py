@@ -19,6 +19,8 @@ class Node(object):
         self.parent = parent
         self.tainted = False
         self.flow_list = []
+        self.line_start = json['loc']['start']['line']-2
+        self.line_end = json['loc']['end']['line']-2
         for key in json:
             if type(json[key]) != dict:
                 if type(json[key]) != list:

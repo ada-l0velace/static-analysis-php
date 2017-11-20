@@ -20,7 +20,7 @@ class BlockStm(Stm):
         return True
 
     def __repr__(self):
-    	return ';\n\t'.join([str(x) for x in self.children]) + ';'
+        return ';\n\t'.join([str(x) for x in self.children]) + ';'
             
             
 class AssignStm(Stm):
@@ -68,7 +68,7 @@ class EchoStm(SysStm):
         super(EchoStm, self).__init__(json, parent)
 
     def __repr__(self):
-		return self.name + '('+ ','.join([str(x) for x in self.arguments]) + ')'
+        return self.name + '('+ ','.join([str(x) for x in self.arguments]) + ')'
 
 class IfStm(Stm):
     def __init__(self, json, parent=None):
@@ -91,6 +91,9 @@ class IfStm(Stm):
             return self.body.is_infinite(node) or self.alternate.body.is_infinite(node)
         else:
             return self.body.is_infinite(node)
+
+    def __repr__(self):
+        return 'if ('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    } ' + 'elseif ('+str(self.alternate.test)+') {\n\t' + str(self.alternate.body) + '\n    }' if self.alternate  else str(self.body)
             
 
 class WhileStm(Stm):
@@ -114,7 +117,7 @@ class WhileStm(Stm):
                 else:
                     return self.body.is_infinite(node)
     def __repr__(self):
-    	return 'while('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    }'
+        return 'while('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    }'
 
         
 class PrintStm(SysStm):
@@ -130,4 +133,4 @@ class ExitStm(SysStm):
             self.arguments = [FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)]
 
     def __repr__(self):
-	return self.name +'('+ str(''.join([str(x) for x in self.arguments])) + ')'
+        return self.name +'('+ str(''.join([str(x) for x in self.arguments])) + ')'

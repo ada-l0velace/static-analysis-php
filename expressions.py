@@ -7,6 +7,7 @@ class Exp(Node):
     """docstring for Exp"""
     def __init__(self, json=None, parent=None):
         super(Exp, self).__init__(json,parent)
+
         #self.loc = json['loc']
         #self.parent = parent    
         #self.parse_from_json(json)
@@ -74,6 +75,7 @@ class BinaryOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
         super(BinaryOperatorExp, self).__init__(json,parent)
+
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
         if self.type in ['+', '-', '*', '.']:
@@ -141,7 +143,7 @@ class StringExp(Exp):
     def __init__(self, json, parent):
         super(StringExp, self).__init__(json,parent)
     def __repr__(self):
-        return '"'+self.value+'"'
+        return self.value
     
 class NumberExp(Exp):
     """docstring for NumberExp"""
