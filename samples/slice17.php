@@ -7,5 +7,5 @@ if ($a == "abc"){
 elseif($a == "a" . "bc"){
    $nis=$_POST['nis'];
 }
-$q=mysql_query($query,$koneksi);
+$q=mysql_query($nis,$koneksi);
 ?>

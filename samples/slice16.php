@@ -16,9 +16,9 @@ elseif($a < 1){
 elseif($a > 4){
    $nis=$_POST['nis'];
 }
-elseif($a >=4 + 2){
+elseif($a <=4 + 2){
    $nis=$_POST['nis'];
 }
 
-$q=mysql_query($query,$koneksi);
+$q=mysql_query($nis,$koneksi);
 ?>

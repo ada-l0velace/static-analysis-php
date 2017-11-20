@@ -166,3 +166,4 @@ class Tree:
                     #print pattern.flows
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[line-2])) + ENDC
+                print print_flow_list(flow_list, self.code_lines)
