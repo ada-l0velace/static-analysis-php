@@ -8,6 +8,9 @@ class Tree:
         self.over = False
         self.code_lines = []
         self.code_lines_cal(self.root)
+        print len(self.code_lines)
+        #for x in self.code_lines:
+        #    print x
         #exit(0)
         #print self.code_lines
         #self.code_lines[::-1]
@@ -27,10 +30,6 @@ class Tree:
                     for i in range(child.line_start, child.line_end+1):
                         self.code_lines.append(str(child))
                     self.code_lines_cal(child)
-            if type(node) == IfStm:
-                self.code_lines.append(node.alternate)
-                self.code_lines_cal(node.alternate)
-
 
         #elif(type(node) == IfStm):
 
@@ -227,9 +226,12 @@ class Tree:
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
                     #print self.code_lines, node.line_start, node.line_end
-                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
+                    try:
+                        print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
+                    except IndexError:
+                        print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start-1])) + ENDC
                     #print pattern.flows
                 else:
                     #print self.code_lines
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
-                print print_flow_list(flow_list, self.code_lines)
+                print_flow_list(flow_list, self.code_lines)

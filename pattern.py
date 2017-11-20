@@ -85,8 +85,10 @@ def print_flow_list(flow_list, parsed_lines):
                 else:
                     format_string = bcolors.OKBLUE + format_string + bcolors.ENDC
                 format_string += "\n    %s"
-                print format_string % (item.type, item.name, parsed_lines[item.line])
-
+                try:
+                    print format_string % (item.type, item.name, parsed_lines[item.line])
+                except IndexError:
+                    print format_string % (item.type, item.name, parsed_lines[item.line-1])
     if not flow_has_inputs(flow_list):
         return
     sorted_flow_list = sorted(flow_list, key=get_line_key)

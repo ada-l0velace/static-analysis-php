@@ -95,7 +95,7 @@ class IfStm(Stm):
             return self.body.is_infinite(node)
 
     def __repr__(self):
-        if self.alternate and self.alternate.test:
+        if self.alternate and hasattr(self.alternate,'test'):
             else_str = '    else' + str(self.alternate)
         elif self.alternate:
             else_str = '    else {\n\t' + str(self.alternate) + '\n    }'
