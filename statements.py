@@ -31,19 +31,24 @@ class ProgramStm(BlockStm):
             self.errors += [FactoryProducer.get_factory(e["kind"],e, self)]
 
 class SysStm(Stm):
-    def __init__(self, json, parent=Node):
-        super(SysStm, self).__init__(json, parent)
+    def __init__(self, json, parent=None):
+        self.super_constructor(json, parent)
         self.name = json["kind"]
         self.arguments = []
-        for arguments in json["arguments"]:
-            self.arguments += [FactoryProducer.get_factory(arguments["kind"],arguments, self)]
+        if "arguments" in json.keys():
+            for arguments in json["arguments"]:
+                self.arguments += [FactoryProducer.get_factory(arguments["kind"],arguments, self)]
+                
+    def super_constructor(self, json, parent):
+        super(SysStm, self).__init__(json, parent)
+
         
 class EchoStm(SysStm):
-    def __init__(self, json, parent=Node):
+    def __init__(self, json, parent=None):
         super(EchoStm, self).__init__(json, parent)
 
 class IfStm(Stm):
-    def __init__(self, json, parent=Node):
+    def __init__(self, json, parent=None):
         super(IfStm, self).__init__(json, parent)
         self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
         self.body = BlockStm(json["body"], self)
@@ -53,18 +58,19 @@ class IfStm(Stm):
             self.alternate = None
 
 class WhileStm(Stm):
-    def __init__(self, json, parent=Node):
+    def __init__(self, json, parent=None):
         super(WhileStm, self).__init__(json, parent)
         self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
         self.body = BlockStm(json["body"], self)
         
 class PrintStm(SysStm):
-    def __init__(self, json, parent=Node):
-        super(PrintStm, self).__init__(json, parent)
-
+    def __init__(self, json, parent=None):
+        super(PrintStm, self).super_constructor(json, parent)
+        self.arguments = [FactoryProducer.get_factory(json["arguments"]["kind"], json["arguments"], self)]
+        
 class ExitStm(SysStm):
-    def __init__(self, json, parent=Node):
-        super(PrintStm, self).__init__(json, parent)
+    def __init__(self, json, parent=None):
+        super(ExitStm, self).__init__(json, parent)
         if json["status"] != None:
             self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
 

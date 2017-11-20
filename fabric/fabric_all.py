@@ -10,7 +10,7 @@ class FactoryProducer(object):
         literal = ['string', 'integer', 'number']
         operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
         expressions = ['constref', 'variable', 'call', 'offsetlookup', 'encapsed'] + literal + operations
-        statements = ['assign', 'program', 'sys', 'echo', 'if', 'while', 'block']
+        statements = ['assign', 'program', 'sys', 'echo', 'if', 'while', 'block', 'print', 'exit' ]
         nodes = ['identifier']
         if kind in expressions:
             return ExpressionFactoryProducer.get_factory(kind, json, parent)
