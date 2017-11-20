@@ -8,7 +8,7 @@ class Tree:
         self.over = False
         self.code_lines = []
         self.code_lines_cal(self.root)
-        exit(0)
+        #exit(0)
         #print self.code_lines
         #self.code_lines[::-1]
 
@@ -227,7 +227,7 @@ class Tree:
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
                     print self.code_lines, node.line_start, node.line_end
-                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start-2])) + ENDC
+                    print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                     #print pattern.flows
                 else:
                     print self.code_lines
