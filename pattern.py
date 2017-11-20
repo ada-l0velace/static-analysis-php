@@ -49,6 +49,9 @@ class Pattern(object):
     def get_var_taintness(self, name):
         return self.vars.get(name, False)
 
+    def get_value(self, name):
+        return self.values[name]
+    
     def parse_patterns(self, pattern_string):
         buf = StringIO.StringIO(pattern_string)
         self.name = buf.readline().strip()

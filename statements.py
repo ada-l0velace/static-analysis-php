@@ -12,6 +12,7 @@ class BlockStm(Stm):
         self.children = []
         for val in json["children"]:
             self.children += [FactoryProducer.get_factory(val["kind"],val, self)]
+
     def is_infinite(self, node):
         for c in self.children:
             if (c.is_infinite(node)) == False:
@@ -78,7 +79,6 @@ class IfStm(Stm):
             self.alternate = FactoryProducer.get_factory(json["alternate"]["kind"], json["alternate"], self)
         else:
             self.alternate = None
-        self.valid = self.is_valid()
             
     def is_valid(self):
         if self.test.is_valid():
@@ -98,25 +98,24 @@ class WhileStm(Stm):
         super(WhileStm, self).__init__(json, parent)
         self.test = FactoryProducer.get_factory(json["test"]["kind"], json["test"], self)
         self.body = BlockStm(json["body"], self)
-        self.valid = self.is_valid()
-        self.infinite = self.is_infinite(self.test.left)
         
     def is_valid(self):
-        if self.test.is_valid():
-            return True
-        else:
-            return False
+        return self.test.is_valid()
 
     def is_infinite(self, node):
-        Bexp = ["==", ">=", "<=", "!="]
-        if self.valid:
-            if type(self.test) == NumberExp and self.test.value == 0:
-                return False
-            elif type(self.test) == BinaryOperatorExp and self.test.type in Bexp :
-                return self.body.is_infinite(node)
-        return False
+        Bexp = ["==", ">=", "<=", "!=", "<", ">"]
+        if self.is_valid():
+            if type(self.test) == NumberExp:
+                if self.test.value == 1:
+                    return True
+            elif type(self.test) == BinaryOperatorExp and self.test.type in Bexp:
+                if self.body.is_infinite(self.test.left):
+                    return True
+                else:
+                    return self.body.is_infinite(node)
     def __repr__(self):
     	return 'while('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    }'
+
         
 class PrintStm(SysStm):
     def __init__(self, json, parent=None):
@@ -131,4 +130,4 @@ class ExitStm(SysStm):
             self.arguments = [FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)]
 
     def __repr__(self):
-		return self.name +'('+ str(''.join([str(x) for x in self.arguments])) + ')'
+	return self.name +'('+ str(''.join([str(x) for x in self.arguments])) + ')'

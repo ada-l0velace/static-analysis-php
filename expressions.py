@@ -78,21 +78,41 @@ class BinaryOperatorExp(Exp):
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
         if self.type in ['+', '-', '*', '.']:
             self.value = Operations.operate(self.type, self.left.value, self.right.value)
-
+            
     def __repr__(self):
         return self.left.__str__() + self.type + self.right.__str__()
 
     def is_valid(self):
         if self.type == '==':
+            print self.left.value
+            print "=="
+            print self.right.value
             return self.left.value == self.right.value
         elif self.type == '<=':
+            print self.left.value
+            print "<="
+            print self.right.value
             return self.left.value <= self.right.value
         elif self.type == '>=':
+            print self.left.value
+            print ">="
+            print self.right.value
             return self.left.value >= self.right.value            
         elif self.type == '>':
-            return self.left.value >= self.right.value            
+            print self.left.value
+            print ">"
+            print self.right.value
+            return self.left.value > self.right.value            
         elif self.type == '<':
-            return self.left.value >= self.right.value
+            print self.left.value
+            print "<"
+            print self.right.value
+            return self.left.value < self.right.value
+        elif self.type == '!=':
+            print self.left.value
+            print "!="
+            print self.right.value
+            return self.left.value != self.right.value
 
 class PostOperatorExp(Exp):
     """docstring for BinaryOperator"""
@@ -103,7 +123,7 @@ class PostOperatorExp(Exp):
     def __repr__(self):
         return str(self.what) + self.type * 2
 
-        
+       
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
@@ -122,11 +142,16 @@ class StringExp(Exp):
         super(StringExp, self).__init__(json,parent)
     def __repr__(self):
         return '"'+self.value+'"'
-
+    
 class NumberExp(Exp):
     """docstring for NumberExp"""
     def __init__(self, json, parent):
         super(NumberExp, self).__init__(json,parent)
-    
+
+    def is_valid(self):
+        if self.value == 0:
+            return False
+        return True
+        
     def __repr__(self):
         return self.value
