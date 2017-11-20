@@ -64,6 +64,11 @@ class Tree:
             else:
                 node.tainted = pattern.get_var_taintness(node.name)
                 node.flow_list = pattern.get_var_flow(node.name)
+            if not pattern.values.has_key(node.name):
+                pattern.set_value(node.name, node.value)
+            else:
+                node.value = pattern.get_value(node.name)
+                
                 
         elif(type(node) == OffsetlookupExp):
             #print 'OFFSET'
@@ -95,18 +100,20 @@ class Tree:
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
-
-            if node.valid:
+            self.visit(node.test, pattern, line)
+            if node.is_valid():
+                print "Valid Node"
                 line += 1
                 for child in node.body.children:
                     line += 1
                     self.code_lines.append(str(child))
                     self.visit(child, pattern, line)
+            else:
                 if node.alternate:
                     line += 1
                     self.visit(node.alternate, pattern, line)        
-
-
+                    
+                
         elif(type(node) == BlockStm):
             for child in node.children:
                 self.code_lines.append(str(child))
@@ -115,13 +122,18 @@ class Tree:
 
 
         elif(type(node) == WhileStm):
-            if node.valid:
+            self.visit(node.test, pattern, line)
+            if type(node.test) == BinaryOperatorExp:
+                var = node.test.left
+            else:
+                var = node.test.value
+            if node.is_valid():
                 for child in node.body.children:
                     line += 1
                     self.visit(child, pattern, line+1)
-            if node.infinite:
-                print "Entered an infinite loop"
-                self.over = True
+                if node.is_infinite(var):
+                    print "Entered an infinite loop"
+                    self.over = True
 
         elif type(node) == CallExp or issubclass(type(node),SysStm):
             #print node
