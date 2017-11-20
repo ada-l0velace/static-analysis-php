@@ -6,7 +6,10 @@ class Tree:
     def __init__(self, json):
         self.root = ProgramStm(json)
         self.over = False
-        
+        self.code_lines = []
+        for child in self.root.children:
+            self.code_lines.append(str(child))
+
     def find_all_kind(self,kind):
         a = []
         for child in self.root.children:
@@ -23,12 +26,14 @@ class Tree:
             for child in node.children:
                 line += 1
                 self.visit(child, pattern, line)
+                
         elif type(node) == AssignStm:
             #print 'ASSIGNS'
             node.right.tainted = False
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
             self.visit(node.right, pattern, line)
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
+            #print node.right,line
             node.left.tainted = node.right.tainted
             node.left.flow_list += node.right.flow_list
             node.left.value = node.right.value
@@ -45,12 +50,13 @@ class Tree:
                 node.tainted = True
                 #item = FlowItem()
                 #node.flow_list += [item]
-                node.left.flow_list += node.right.flow_list 
+                node.left.flow_list = node.right.flow_list 
 
         elif(type(node) == ParenthesisOperatorExp):
             self.visit(node.inner, pattern, line)
             node.tainted = node.inner.tainted
             node.flow_list += node.inner.flow_list
+        
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
                 pattern.set_taintness(node.name, node.tainted)
@@ -66,7 +72,7 @@ class Tree:
                 node.tainted = True
                 item = FlowItem()
                 item.name = '$'+node.name+'[\''+node.offset+'\']'
-                item.type = FlowItem.INPUT_TYPE
+                item.type = FlowItem.INPUT_TYPE 
                 item.line = line
                 node.flow_list += [item]
                 #pattern.set_taintness(node.name, node.tainted)
@@ -80,6 +86,7 @@ class Tree:
                 if v.tainted:
                     c += 1
                     node.tainted = v.tainted
+                #print v.flow_list, 'lol'
                 node.flow_list += v.flow_list
             if c == 0:
                 node.tainted = False
@@ -112,10 +119,11 @@ class Tree:
             flow_list = []
             for param in node.arguments:
                 self.visit(param, pattern, line)
+                #print param.flow_list, param.name
                 if param.tainted:
                     node.tainted = True
                 flow_list += param.flow_list
-            node.flow_list += flow_list
+            node.flow_list = flow_list
             if pattern.is_sanitization(node.name):
                 node.tainted = False
                 pattern.set_taintness(node.name, False)
@@ -124,6 +132,7 @@ class Tree:
                 item.line = line
                 item.type = FlowItem.SANITIZATION_TYPE
                 node.flow_list += [item]
+
             #print node.name, node.tainted,pattern.is_sanitization(node.name), pattern.sanitizations
             
             if pattern.is_sink(node.name):
@@ -137,19 +146,7 @@ class Tree:
                 node.flow_list = flow_list
                 pattern.set_var_flow(node.name, node.flow_list)
                 #print node.tainted
-                flows = {}
-                for flow_key in pattern.flows.keys():
-                    for flow in pattern.flows[flow_key]:
-                        flag = False
-                        if flows.has_key(flow_key):
-                            for f in flows[flow_key]:
-                                if f.name == flow.name:
-                                    flag = True
-                                    break
-                            if not flag:
-                                flows[flow_key] += [flow]
-                        else:
-                            flows[flow_key] = [flow]
+
                 FAIL = '\033[91m'
                 OKGREEN = '\033[92m'
                 WARNING = '\033[93m'
@@ -160,8 +157,9 @@ class Tree:
                     #print pattern.flows
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
-                for key in flows.keys():
-                    print_flow_list(flows[key], key)
+                #for key in flows.keys():
+
+                #print_flow_list(flow_list, self.code_lines)
 
                 
                 #print flow_list

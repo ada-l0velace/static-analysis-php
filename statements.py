@@ -28,7 +28,7 @@ class AssignStm(Stm):
         self.left.value = self.right.value
         
     def __repr__(self):
-        return self.kind
+        return str(self.left)+self.operator+str(self.right)
 
     
     def is_infinite(self, node):

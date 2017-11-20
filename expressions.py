@@ -53,7 +53,7 @@ class EncapsedExp(Exp):
             self.value += i.value
             
     def __repr__(self):
-        return self.kind
+        return ''.join([x.__str__() for x in self.values])
 
 class CallExp(Exp):
     def __init__(self, json, parent):
@@ -80,7 +80,7 @@ class BinaryOperatorExp(Exp):
             self.value = Operations.operate(self.type, self.left.value, self.right.value)
 
     def __repr__(self):
-        return self.left.__str__ + self.type + self.right.__str__
+        return self.left.__str__() + self.type + self.right.__str__()
 
     def is_valid(self):
         if self.type == '==':

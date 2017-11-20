@@ -67,7 +67,7 @@ def flow_has_inputs(flow_list):
             return True
     return False
 
-def print_flow_list(flow_list, name):
+def print_flow_list(flow_list, parsed_lines):
     def get_line_key(item):
         return item.line
 
@@ -82,17 +82,17 @@ def print_flow_list(flow_list, name):
                 else:
                     format_string = bcolors.OKBLUE + format_string + bcolors.ENDC
                 format_string += "\n    %s"
-                print format_string % (item.type, item.name, item.line)
+                print format_string % (item.type, item.name, parsed_lines[item.line-2])
 
     if not flow_has_inputs(flow_list):
         return
     sorted_flow_list = sorted(flow_list, key=get_line_key)
-    #print name
-    print "****************************** START FLOW (%s) *****************************************" % name
+    print "****************************** START FLOW  *****************************************"
     select_types(sorted_flow_list, FlowItem.INPUT_TYPE)
     select_types(sorted_flow_list, FlowItem.SANITIZATION_TYPE)
     select_types(sorted_flow_list, FlowItem.SINK_TYPE)
-    print "******************************* END FLOW (%s) ******************************************" % name            
+    print "******************************* END FLOW  ******************************************"         
+
 class FlowItem(object):
 
     INPUT_TYPE = "Input"
