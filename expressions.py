@@ -106,43 +106,13 @@ class BinaryOperatorExp(Exp):
             json["right"]["kind"], json["right"], self)
 
     def get_value(self):
-        if self.type in ['+', '-', '*', '.', '/']:
-            return Operations.operate(self.type, self.left.get_value(), self.right.get_value())
+        return Operations.operate(self.type, self.left.get_value(), self.right.get_value())
 
     def __repr__(self):
         return self.left.__str__() + self.type + self.right.__str__()
 
     def is_valid(self):
-        if self.type == '==':
-            # print self.left.value
-            # print "=="
-            # print self.right.value
-            return self.left.value == self.right.get_value()
-        elif self.type == '<=':
-            # print self.left.value
-            # print "<="
-            # print self.right.value
-            return self.left.value <= self.right.get_value()
-        elif self.type == '>=':
-            # print self.left.value
-            # print ">="
-            # print self.right.value
-            return self.left.value >= self.right.get_value()
-        elif self.type == '>':
-            # print self.left.value
-            # print ">"
-            # print self.right.value
-            return self.left.value > self.right.get_value()
-        elif self.type == '<':
-            # print self.left.value
-            # print "<"
-            # print self.right.value
-            return self.left.value < self.right.get_value()
-        elif self.type == '!=':
-            # print self.left.value
-            # print "!="
-            # print self.right.value
-            return self.left.value != self.right.get_value()
+        return Operations.verify(self.type, self.left.get_value(), self.right.get_value())
 
 
 class PostOperatorExp(Exp):

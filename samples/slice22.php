@@ -15,7 +15,7 @@ elseif($a < 1){
 elseif($a > 4){
    $nis=$_POST['eis'];
 }
-elseif($a <=(5 + 2) * (5+6) * (10/5)){
+elseif($a <=(5 + $a) * ($a+6) * (10/5)){
    $nis=$_POST['fis'];
 }
 $q=mysql_query($nis,$koneksi);

@@ -12,6 +12,7 @@ class BlockStm(Stm):
     def __init__(self, json, parent=None):
         super(BlockStm, self).__init__(json, parent)
         self.children = []
+        self.breakpoint = False
         for val in json["children"]:
             self.children += [
                 FactoryProducer.get_factory(val["kind"], val, self)]

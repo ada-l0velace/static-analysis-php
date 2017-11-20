@@ -89,13 +89,12 @@ class Tree:
         elif(type(node) == BinaryOperatorExp):
 
             self.visit(node.right, pattern, line)
-
             #node.left.tainted = node.right.tainted
             #node.left.flow_list = node.right.flow_list
             self.visit(node.left, pattern, line)
+
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
-
                 node.flow_list += node.left.flow_list + node.right.flow_list
                 #node.left.flow_list = node.right.flow_list
 
@@ -161,6 +160,8 @@ class Tree:
                 line += 1
                 for child in node.body.children:
                     line += 1
+                    if node.body.breakpoint:
+                        break
                     # self.code_lines.append(str(child))
                     self.visit(child, pattern, line)
             else:
@@ -169,10 +170,18 @@ class Tree:
                     self.visit(node.alternate, pattern, line)
 
         elif(type(node) == BlockStm):
+            print "Next node is "
+            print node.kind
             for child in node.children:
+                if self.breakpoint:
+                    print "NOW"
+                    break
                 # self.code_lines.append(str(child))
                 line += 1
                 self.visit(child, pattern, line)
+
+        elif(type(node) == BreakNode):
+            node.parent.breakpoint = True
 
         elif(type(node) == WhileStm):
             self.visit(node.test, pattern, line)
@@ -181,9 +190,11 @@ class Tree:
             else:
                 var = node.test.get_value()
             if node.is_valid():
-                # print 'WTF'
+
                 for child in node.body.children:
                     line += 1
+                    if node.body.breakpoint:
+                        break
                     self.visit(child, pattern, line + 1)
                 if node.is_infinite(var):
                     print "Entered an infinite loop"
