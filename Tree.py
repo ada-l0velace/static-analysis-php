@@ -35,7 +35,7 @@ class Tree:
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             #print node.right,line
             node.left.tainted = node.right.tainted
-            node.left.flow_list += node.right.flow_list
+            node.left.flow_list = node.right.flow_list
             node.left.value = node.right.value
             pattern.set_value(node.left.name, node.left.value)
             self.visit(node.left, pattern, line)
@@ -55,7 +55,7 @@ class Tree:
         elif(type(node) == ParenthesisOperatorExp):
             self.visit(node.inner, pattern, line)
             node.tainted = node.inner.tainted
-            node.flow_list += node.inner.flow_list
+            node.flow_list = node.inner.flow_list
         
         elif(type(node) == VariableExp):
             if not pattern.vars.has_key(node.name):
@@ -74,7 +74,7 @@ class Tree:
                 item.name = '$'+node.name+'[\''+node.offset+'\']'
                 item.type = FlowItem.INPUT_TYPE 
                 item.line = line
-                node.flow_list += [item]
+                node.flow_list = [item]
                 #pattern.set_taintness(node.name, node.tainted)
                 #pattern.set_var_flow(node.name, node.flow_list)
 
