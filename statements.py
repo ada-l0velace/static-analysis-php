@@ -62,11 +62,9 @@ class PrintStm(SysStm):
     def __init__(self, json, parent=Node):
         super(PrintStm, self).__init__(json, parent)
 
-class PrintStm(SysStm):
+class ExitStm(SysStm):
     def __init__(self, json, parent=Node):
         super(PrintStm, self).__init__(json, parent)
+        if json["status"] != None:
+            self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
 
-class DieStm(SysStm):
-    def __init__(self, json, parent=Node):
-        super(PrintStm, self).__init__(json, parent)
-        self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
