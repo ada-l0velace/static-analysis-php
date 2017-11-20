@@ -21,7 +21,7 @@ class AssignStm(Stm):
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
     def __repr__(self):
-        return self.kind 
+        return str(self.left)+self.operator+str(self.right)
 
 class ProgramStm(BlockStm):
     def __init__(self, json, parent=None):

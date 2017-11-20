@@ -46,7 +46,7 @@ class EncapsedExp(Exp):
         for a in json["value"]:
             self.values += [FactoryProducer.get_factory(a['kind'], a, self)]
     def __repr__(self):
-        return self.kind
+        return ''.join([x.__str__() for x in self.values])
 
 class CallExp(Exp):
     def __init__(self, json, parent):
@@ -69,7 +69,7 @@ class BinaryOperatorExp(Exp):
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self) 
     def __repr__(self):
-        return self.left.__str__ + self.type + self.right.__str__
+        return self.left.__str__() + self.type + self.right.__str__()
 
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
