@@ -73,7 +73,7 @@ class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
     def __init__(self, json, parent):
         super(ParenthesisOperatorExp, self).__init__(json,parent)
-        self.inner = FactoryProducer.get_factory(a['inner']['kind'], a, self)
+        self.inner = FactoryProducer.get_factory(json['inner']['kind'], json, self)
     def __repr__(self):
         return self.type
 
