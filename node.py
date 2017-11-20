@@ -23,8 +23,8 @@ class Node(object):
             if type(json[key]) != dict:
                 if type(json[key]) != list:
                     self.__dict__[key] = json[key]
-    def is_used(self, node):
-        return False
+    def is_infinite(self, node):
+        return True
 
 
 class IdentifierNode(Node):

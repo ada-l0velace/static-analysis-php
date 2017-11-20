@@ -5,7 +5,8 @@ from pattern import *
 class Tree:
     def __init__(self, json):
         self.root = ProgramStm(json)
-
+        self.over = False
+        
     def find_all_kind(self,kind):
         a = []
         for child in self.root.children:
@@ -15,6 +16,8 @@ class Tree:
 
     def visit(self,node, pattern):
         #print 'puts'
+        if self.over == True:
+            return
         if type(node) == ProgramStm:
             #print node.__dict__
             for child in node.children:
@@ -27,6 +30,8 @@ class Tree:
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             node.left.tainted = node.right.tainted
             node.left.flow_list += node.right.flow_list
+            node.left.value = node.right.value
+            pattern.set_value(node.left.name, node.left.value)
             self.visit(node.left, pattern)
             #print node.left.tainted,node.left
             #print node.left,node.left.tainted
@@ -79,10 +84,11 @@ class Tree:
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
-            for child in node.body.children:
-                self.visit(child, pattern)
-            if node.alternate:
-                self.visit(node.alternate, pattern)
+            if node.valid:
+                for child in node.body.children:
+                    self.visit(child, pattern)
+                if node.alternate:
+                    self.visit(node.alternate, pattern)
 
         elif(type(node) == BlockStm):
             for child in node.children:
@@ -92,6 +98,9 @@ class Tree:
             if node.valid:
                 for child in node.body.children:
                     self.visit(child, pattern)
+            if node.infinite:
+                print "Entered an infinite loop"
+                self.over = True
 
         elif type(node) == CallExp or issubclass(type(node),SysStm):
             #print node
