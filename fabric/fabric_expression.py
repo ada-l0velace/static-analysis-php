@@ -14,5 +14,6 @@ class ExpressionFactoryProducer(object):
              'encapsed' : expressions.EncapsedExp,
              'number' : expressions.NumberExp,
              'parenthesis': expressions.ParenthesisOperatorExp,
-             'post': expressions.PostOperatorExp}
+             'post': expressions.PostOperatorExp,
+             'boolean': expressions.BooleanExp}
         return d[kind](json=json,parent=parent)

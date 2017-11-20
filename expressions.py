@@ -181,4 +181,19 @@ class NumberExp(Exp):
         return int(self.value)
 
     def __repr__(self):
-        return self.value
+        return str(self.value)
+
+class BooleanExp(Exp):
+    """docstring for BooleanExp"""
+
+    def __init__(self, json, parent):
+        super(BooleanExp, self).__init__(json, parent)
+
+    def is_valid(self):
+        return self.get_value()
+
+    def get_value(self):
+        return bool(self.value)
+
+    def __repr__(self):
+        return str(self.value).lower()

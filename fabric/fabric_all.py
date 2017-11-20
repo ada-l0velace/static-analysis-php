@@ -8,7 +8,7 @@ from fabric_node import NodeFactoryProducer
 class FactoryProducer(object):
     @staticmethod
     def get_factory(kind, json, parent):
-        literal = ['string', 'integer', 'number']
+        literal = ['string', 'integer', 'number', 'boolean']
         operations = ['bin', 'pre', 'post', 'parenthesis', 'unary', 'cast']
         expressions = ['constref', 'variable', 'call',
                        'offsetlookup', 'encapsed'] + literal + operations
