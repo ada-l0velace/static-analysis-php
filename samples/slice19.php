@@ -7,8 +7,10 @@ elseif($a <= 1){
    $nis=$_POST['bis'];
 }
 elseif($a <=4){
-		  break;
-   $nis=$_POST['cis'];
+	while($a <=4){
+			 break;		 
+			 $nis=$_POST['cis'];
+   }
 }
 elseif($a < 1){
    $nis=$_POST['dis'];
