@@ -77,9 +77,8 @@ class Tree:
             #print node.right,line
             node.left.tainted = node.right.tainted
             node.left.flow_list = node.right.flow_list
-            node.left.value = node.right.value
-            #print node.right.flow_list
-            pattern.set_value(node.left.name, node.left.value)
+            node.left.value = node.right.get_value()
+            pattern.set_value(node.left.name, node.left.get_value())
             self.visit(node.left, pattern, line)
             #print node.left.tainted,node.left
             #print node.left,node.left.tainted
@@ -107,10 +106,14 @@ class Tree:
                 node.tainted = pattern.get_var_taintness(node.name)
                 node.flow_list = pattern.get_var_flow(node.name)
             if not pattern.values.has_key(node.name):
-                pattern.set_value(node.name, node.value)
+                pattern.set_value(node.name, node.get_value())
             else:
                 node.value = pattern.get_value(node.name)
-                
+
+        elif(type(node) == PostOperatorExp):
+            self.visit(node.what, pattern, line)
+            pattern.set_value(node.what.name, node.what.get_value())
+            
                 
         elif(type(node) == OffsetlookupExp):
             #print 'OFFSET'
@@ -149,7 +152,6 @@ class Tree:
         elif(type(node) == IfStm):
             self.visit(node.test, pattern, line)
             if node.is_valid():
-                print "Valid Node"
                 line += 1
                 for child in node.body.children:
                     line += 1
@@ -173,7 +175,7 @@ class Tree:
             if type(node.test) == BinaryOperatorExp:
                 var = node.test.left
             else:
-                var = node.test.value
+                var = node.test.get_value()
             if node.is_valid():
                 for child in node.body.children:
                     line += 1

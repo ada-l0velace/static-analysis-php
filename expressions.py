@@ -24,7 +24,9 @@ class OffsetlookupExp(Exp):
         
         self.name = json['what']['name']
         self.offset = json['offset']['value']
-        self.value = self.name
+
+    def get_value(self):
+        return self.name
 
         #self.name = self.what['name']
     
@@ -38,20 +40,28 @@ class VariableExp(Exp):
         #print json
         self.name = json["name"]
         self.value = ""
+
+        
     def __repr__(self):
-        return '$'+self.name        
+        return '$'+self.name
+
+    def get_value(self):
+        return self.value
 
 class EncapsedExp(Exp):
     """docstring for EncapsedExp"""
     def __init__(self, json, parent):
         super(EncapsedExp, self).__init__(json,parent)
         self.values = []
-        self.value = ""
         #print json
         for a in json["value"]:
             self.values += [FactoryProducer.get_factory(a['kind'], a, self)]
-        for i in self.values:
-            self.value += i.value
+
+    def get_value(self):
+            value = ""
+            for i in self.values:
+                value += i.get_value()
+            return value
             
     def __repr__(self):
         return ''.join([x.__str__() for x in self.values])
@@ -64,7 +74,8 @@ class CallExp(Exp):
         #self.name = self.what['name']
         for a in json["arguments"]:
             self.arguments += [FactoryProducer.get_factory(a['kind'], a, self)]
-        self.value = None
+    def get_value(self):
+            return self.name
             
     def __repr__(self):
         return self.name + '(' + ','.join([x.__str__() for x in self.arguments]) + ')'
@@ -78,43 +89,45 @@ class BinaryOperatorExp(Exp):
 
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self)
+
+    def get_value(self):
         if self.type in ['+', '-', '*', '.']:
-            self.value = Operations.operate(self.type, self.left.value, self.right.value)
+            return Operations.operate(self.type, self.left.get_value(), self.right.get_value())
             
     def __repr__(self):
         return self.left.__str__() + self.type + self.right.__str__()
 
     def is_valid(self):
         if self.type == '==':
-            print self.left.value
-            print "=="
-            print self.right.value
-            return self.left.value == self.right.value
+            # print self.left.value
+            # print "=="
+            # print self.right.value
+            return self.left.value == self.right.get_value()
         elif self.type == '<=':
-            print self.left.value
-            print "<="
-            print self.right.value
-            return self.left.value <= self.right.value
+            # print self.left.value
+            # print "<="
+            # print self.right.value
+            return self.left.value <= self.right.get_value()
         elif self.type == '>=':
-            print self.left.value
-            print ">="
-            print self.right.value
-            return self.left.value >= self.right.value            
+            # print self.left.value
+            # print ">="
+            # print self.right.value
+            return self.left.value >= self.right.get_value()
         elif self.type == '>':
-            print self.left.value
-            print ">"
-            print self.right.value
-            return self.left.value > self.right.value            
+            # print self.left.value
+            # print ">"
+            # print self.right.value
+            return self.left.value > self.right.get_value()     
         elif self.type == '<':
-            print self.left.value
-            print "<"
-            print self.right.value
-            return self.left.value < self.right.value
+            # print self.left.value
+            # print "<"
+            # print self.right.value
+            return self.left.value < self.right.get_value()
         elif self.type == '!=':
-            print self.left.value
-            print "!="
-            print self.right.value
-            return self.left.value != self.right.value
+            # print self.left.value
+            # print "!="
+            # print self.right.value
+            return self.left.value != self.right.get_value()
 
 class PostOperatorExp(Exp):
     """docstring for BinaryOperator"""
@@ -122,9 +135,18 @@ class PostOperatorExp(Exp):
         super(PostOperatorExp, self).__init__(json,parent)
         self.what = FactoryProducer.get_factory(json["what"]["kind"], json["what"], self)
 
+    def get_value(self):
+        return Operations.operate(self.type, self.what.get_value(), 1)
+
     def __repr__(self):
         return str(self.what) + self.type * 2
 
+    def is_infinite(self, node):
+        if self.what.name == node.name:
+            return False
+        return True
+
+    
        
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
@@ -142,7 +164,11 @@ class StringExp(Exp):
     """docstring for StringExp"""
     def __init__(self, json, parent):
         super(StringExp, self).__init__(json,parent)
+    
     def __repr__(self):
+        return self.value
+
+    def get_value(self):
         return self.value
     
 class NumberExp(Exp):
@@ -154,6 +180,9 @@ class NumberExp(Exp):
         if self.value == 0:
             return False
         return True
+
+    def get_value(self):
+        return int(self.value)
         
     def __repr__(self):
         return self.value
