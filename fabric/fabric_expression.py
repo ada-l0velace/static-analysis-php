@@ -13,5 +13,6 @@ class ExpressionFactoryProducer(object):
              'call' : expressions.CallExp,
              'encapsed' : expressions.EncapsedExp,
              'number' : expressions.NumberExp,
-             'parenthesis': expressions.ParenthesisOperatorExp}
+             'parenthesis': expressions.ParenthesisOperatorExp,
+             'post': expressions.PostOperatorExp}
         return d[kind](json=json,parent=parent)

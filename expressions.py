@@ -93,6 +93,16 @@ class BinaryOperatorExp(Exp):
             return self.left.value >= self.right.value            
         elif self.type == '<':
             return self.left.value >= self.right.value
+
+class PostOperatorExp(Exp):
+    """docstring for BinaryOperator"""
+    def __init__(self, json, parent):
+        super(PostOperatorExp, self).__init__(json,parent)
+        self.what = FactoryProducer.get_factory(json["what"]["kind"], json["what"], self)
+
+    def __repr__(self):
+        return str(self.what) + self.type * 2
+
         
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
