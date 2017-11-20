@@ -97,13 +97,18 @@ class Tree:
                 for child in node.body.children:
                     line += 1
                     self.visit(child, pattern, line)
-                if node.alternate:
-                    line += 1
-                    self.visit(node.alternate, pattern, line)
+            if node.alternate:
+                line += 1
+                self.visit(node.alternate, pattern, line)
+
+
+
         elif(type(node) == BlockStm):
             for child in node.children:
                 line += 1
                 self.visit(child, pattern, line)
+
+
         elif(type(node) == WhileStm):
             if node.valid:
                 for child in node.body.children:
