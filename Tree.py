@@ -145,7 +145,6 @@ class Tree:
                 OKGREEN = '\033[92m'
                 WARNING = '\033[93m'
                 ENDC = '\033[0m'
-                print line
                 if node.tainted:
                     print WARNING+"Warning: Tainted input reached sink."+ENDC
                     print FAIL+"%s vulnerability found in %s" % (pattern.name, str(node)) + ENDC
@@ -153,8 +152,7 @@ class Tree:
                 else:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
                 for key in flows.keys():
-                    print_flow_list(flows[key], key)    
-                        
+                    print_flow_list(flows[key], key)
 
                 
                 #print flow_list
