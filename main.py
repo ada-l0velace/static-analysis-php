@@ -28,7 +28,6 @@ if __name__ == '__main__':
     for i in range(1,len(patterns.split('\n'))+1):
         pattern += patts.readline()
         if i % 4 == 0:
-            print '---------------------------------------'
             t.visit(t.root, Pattern(patterns=pattern))
             pattern = ''
             patts.readline()

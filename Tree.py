@@ -43,11 +43,9 @@ class Tree:
 
         
         elif(type(node) == VariableExp):
-            #print 'VARS'
             if not pattern.vars.has_key(node.name):
                 pattern.set_taintness(node.name, node.tainted)
                 pattern.set_var_flow(node.name, node.flow_list)
-                #node.flow_list += [item]
             else:
                 node.tainted = pattern.get_var_taintness(node.name)
                 node.flow_list = pattern.get_var_flow(node.name)
@@ -63,17 +61,12 @@ class Tree:
                 node.flow_list += [item]
                 #pattern.set_taintness(node.name, node.tainted)
                 #pattern.set_var_flow(node.name, node.flow_list)
-            else:
-                node.tainted = pattern.get_var_taintness(node.name)
-                node.flow_list = pattern.get_var_flow(node.name)
 
         elif(type(node) == EncapsedExp):
             #print 'ENCAPSED'
             c = 0
             for v in node.values:
                 self.visit(v, pattern)
-
-                #print v.tainted, v
                 if v.tainted:
                     c += 1
                     node.tainted = v.tainted
@@ -125,13 +118,28 @@ class Tree:
                 node.flow_list = flow_list
                 pattern.set_var_flow(node.name, node.flow_list)
                 #print node.tainted
+                flows = {}
+                for flow_key in pattern.flows.keys():
+                    for flow in pattern.flows[flow_key]:
+                        flag = False
+                        if flows.has_key(flow_key):
+                            for f in flows[flow_key]:
+                                if f.name == flow.name:
+                                    flag = True
+                                    break
+                            if not flag:
+                                flows[flow_key] += [flow]
+                        else:
+                            flows[flow_key] = [flow]
+                
                 if node.tainted:
                     print "Warning: Tainted input reached sink."
                     print "%s vulnerability found" % pattern.name
-                    print pattern.flows
+                    #print pattern.flows
                 else:
                     print "No %s vulnerabilities found" % pattern.name
-                    print pattern.flows
+                print flows    
+                        
 
                 
                 #print flow_list
