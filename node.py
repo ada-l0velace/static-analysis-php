@@ -50,3 +50,6 @@ class BreakNode(Node):
 
     def is_infinite(self, node):
         return False
+
+    def __repr__(self):
+        return 'break'
