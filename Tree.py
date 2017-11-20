@@ -8,7 +8,7 @@ class Tree:
         self.over = False
         self.code_lines = []
         self.code_lines_cal(self.root)
-        print len(self.code_lines)
+        #print len(self.code_lines)
         #for x in self.code_lines:
         #    print x
         #exit(0)
@@ -68,17 +68,21 @@ class Tree:
                 
         elif type(node) == AssignStm:
             #print 'ASSIGNS'
-            node.right.tainted = False
-            #print 'BEFORE ASSIGNS',node.right.tainted,node.right
+            #node.right.tainted = False
             #print node.right, line
+
+            #print node.right.flow_list, 'BEFORE RIGHT'
             self.visit(node.right, pattern, line)
-            #print 'AFTER ASSIGNS',node.right.tainted,node.right
             #print node.right,line
             node.left.tainted = node.right.tainted
             node.left.flow_list = node.right.flow_list
             node.left.value = node.right.get_value()
             pattern.set_value(node.left.name, node.left.get_value())
+            #print node.right.flow_list, 'AFTER RIGHT'
+            
+            #print node.left.flow_list, 'BEFORE LEFT'    
             self.visit(node.left, pattern, line)
+            #print node.left.flow_list, 'AFTER LEFT'
             #print node.left.tainted,node.left
             #print node.left,node.left.tainted
 
@@ -86,11 +90,15 @@ class Tree:
 
             self.visit(node.right, pattern, line)
             
-            node.left.tainted = node.right.tainted
+            #node.left.tainted = node.right.tainted
+            #node.left.flow_list = node.right.flow_list
             self.visit(node.left, pattern, line)
             if node.right.tainted or node.left.tainted:
                 node.tainted = True
-                node.left.flow_list = node.right.flow_list 
+
+                node.flow_list += node.left.flow_list + node.right.flow_list
+                #node.left.flow_list = node.right.flow_list 
+        
         elif(type(node) == ParenthesisOperatorExp):
             self.visit(node.inner, pattern, line)
             node.tainted = node.inner.tainted
@@ -176,6 +184,7 @@ class Tree:
             else:
                 var = node.test.get_value()
             if node.is_valid():
+                #print 'WTF'
                 for child in node.body.children:
                     line += 1
                     self.visit(child, pattern, line+1)
@@ -189,7 +198,7 @@ class Tree:
             flow_list = []
             for param in node.arguments:
                 self.visit(param, pattern, line)
-                #print param.flow_list, param.name
+                #print param.flow_list, 'PARAM'
                 if param.tainted:
                     node.tainted = True
                 flow_list += param.flow_list
@@ -229,9 +238,11 @@ class Tree:
                     try:
                         print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                     except IndexError:
+                        print 'ERROR'
                         print FAIL+"%s vulnerability found in %s" % (pattern.name, str(self.code_lines[node.line_start-1])) + ENDC
                     #print pattern.flows
                 else:
                     #print self.code_lines
+                    #print node.line_start
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
                 print_flow_list(flow_list, self.code_lines)
