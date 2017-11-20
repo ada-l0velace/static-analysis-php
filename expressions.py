@@ -56,8 +56,9 @@ class CallExp(Exp):
         #self.name = self.what['name']
         for a in json["arguments"]:
             self.arguments += [FactoryProducer.get_factory(a['kind'], a, self)]
+    
     def __repr__(self):
-        return self.name
+        return self.name + '(' + ','.join([x.__str__() for x in self.arguments]) + ')'
                 
 #### OPERATORS
         
@@ -68,7 +69,7 @@ class BinaryOperatorExp(Exp):
         self.left = FactoryProducer.get_factory(json["left"]["kind"], json["left"], self) 
         self.right = FactoryProducer.get_factory(json["right"]["kind"], json["right"], self) 
     def __repr__(self):
-        return self.type
+        return self.left.__str__ + self.type + self.right.__str__
 
 class ParenthesisOperatorExp(Exp):
     """docstring for BinaryOperator"""
@@ -77,7 +78,7 @@ class ParenthesisOperatorExp(Exp):
         self.name = self.kind
         self.inner = FactoryProducer.get_factory(json['inner']['kind'], json['inner'], self)
     def __repr__(self):
-        return self.type
+        return '(' + self.inner.__str__() + ')'
 
 
 #### LITERALS
@@ -93,6 +94,7 @@ class NumberExp(Exp):
     """docstring for NumberExp"""
     def __init__(self, json, parent):
         super(NumberExp, self).__init__(json,parent)
+    
     def __repr__(self):
         return self.value
 

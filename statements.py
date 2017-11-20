@@ -42,10 +42,15 @@ class SysStm(Stm):
     def super_constructor(self, json, parent):
         super(SysStm, self).__init__(json, parent)
 
+    def __repr__(self):
+        return self.name + ','.join([x.__str__() for x in self.arguments])
+
         
 class EchoStm(SysStm):
     def __init__(self, json, parent=None):
         super(EchoStm, self).__init__(json, parent)
+    def __repr__(self):
+        return self.name + '('+ ','.join([str(x) for x in self.arguments]) + ')'
 
 class IfStm(Stm):
     def __init__(self, json, parent=None):
@@ -68,10 +73,15 @@ class PrintStm(SysStm):
         super(PrintStm, self).super_constructor(json, parent)
         self.name = json["kind"]
         self.arguments = [FactoryProducer.get_factory(json["arguments"]["kind"], json["arguments"], self)]
-        
+
 class ExitStm(SysStm):
     def __init__(self, json, parent=None):
         super(ExitStm, self).__init__(json, parent)
         if json["status"] != None:
             self.status = FactoryProducer.get_factory(json["status"]["kind"], json["status"], self)
+        else:
+        	self.status = None
+
+    def __repr__(self):
+    	return self.name +'('+ str(self.status) + ')'
 
