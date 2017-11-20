@@ -7,8 +7,7 @@ class Tree:
         self.root = ProgramStm(json)
         self.over = False
         self.code_lines = []
-        for child in self.root.children:
-            self.code_lines.append(str(child))
+        self.code_lines_cal(self.root)
 
     def find_all_kind(self,kind):
         a = []
@@ -16,6 +15,29 @@ class Tree:
             if child.kind == kind:
                 a.append(child)
         return a
+
+    def code_lines_cal(self, node):
+        if type(node) == ProgramStm:
+            #print node.__dict__
+            for child in node.children:
+                self.code_lines.append(child)
+                self.code_lines_cal(child)
+        elif(type(node) == IfStm):
+            for child in node.body.children:
+                self.code_lines.append(str(child))
+                self.code_lines_cal(child)
+            if node.alternate:
+                self.code_lines_cal(node.alternate)        
+        elif(type(node) == BlockStm):
+            for child in node.children:
+                self.code_lines.append(str(child))
+                self.code_lines_cal(child)
+
+        elif(type(node) == WhileStm):
+            for child in node.body.children:
+                self.code_lines.append(str(child))
+                self.code_lines_cal(child)
+
 
     def visit(self,node, pattern, line):
         #print 'puts'
@@ -29,9 +51,10 @@ class Tree:
                 
         elif type(node) == AssignStm:
             #print 'ASSIGNS'
+            print node
             node.right.tainted = False
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
-            print node.right, line
+            #print node.right, line
             self.visit(node.right, pattern, line)
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
             #print node.right,line
@@ -83,6 +106,8 @@ class Tree:
         elif(type(node) == EncapsedExp):
             #print 'ENCAPSED'
             c = 0
+            if len(node.flow_list) > 0:
+                node.flow_list[0].line = line 
             for v in node.values:
                 self.visit(v, pattern, line)
                 if v.tainted:
@@ -92,6 +117,7 @@ class Tree:
                 node.flow_list += v.flow_list
             if c == 0:
                 node.tainted = False
+
             #pattern.set_var_flow(node.kind, node.flow_list)
             #print v
         elif(type(node) == IfStm):
@@ -100,7 +126,7 @@ class Tree:
                 line += 1
                 for child in node.body.children:
                     line += 1
-                    self.code_lines.append(str(child))
+                    #self.code_lines.append(str(child))
                     self.visit(child, pattern, line)
                 if node.alternate:
                     line += 1
@@ -109,7 +135,7 @@ class Tree:
 
         elif(type(node) == BlockStm):
             for child in node.children:
-                self.code_lines.append(str(child))
+                #self.code_lines.append(str(child))
                 line += 1
                 self.visit(child, pattern, line)
 

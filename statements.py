@@ -17,6 +17,9 @@ class BlockStm(Stm):
             if (c.is_infinite(node)) == False:
                 return False
         return True
+
+    def __repr__(self):
+    	return ';\n\t'.join([str(x) for x in self.children]) + ';'
             
             
 class AssignStm(Stm):
@@ -112,6 +115,8 @@ class WhileStm(Stm):
             elif type(self.test) == BinaryOperatorExp and self.test.type in Bexp :
                 return self.body.is_infinite(node)
         return False
+    def __repr__(self):
+    	return 'while('+str(self.test)+ ')' + '{\n\t' + str(self.body) + '\n    }'
         
 class PrintStm(SysStm):
     def __init__(self, json, parent=None):
