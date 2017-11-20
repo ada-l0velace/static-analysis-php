@@ -30,7 +30,7 @@ class Tree:
             #print 'BEFORE ASSIGNS',node.right.tainted,node.right
             self.visit(node.right, pattern, line)
             #print 'AFTER ASSIGNS',node.right.tainted,node.right
-            print node.right,line
+            #print node.right,line
             node.left.tainted = node.right.tainted
             node.left.flow_list = node.right.flow_list
             self.visit(node.left, pattern, line)
@@ -150,7 +150,7 @@ class Tree:
                     print OKGREEN+"No %s vulnerabilities found in %s" % (pattern.name, str(node)) + ENDC
                 #for key in flows.keys():
 
-                print_flow_list(flow_list, self.code_lines)
+                #print_flow_list(flow_list, self.code_lines)
 
                 
                 #print flow_list
