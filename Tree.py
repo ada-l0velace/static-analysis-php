@@ -7,6 +7,7 @@ class Tree:
     def __init__(self, json):
         self.root = ProgramStm(json)
         self.over = False
+        self.breakpoint = False
         self.code_lines = []
         self.code_lines_cal(self.root)
         # print len(self.code_lines)

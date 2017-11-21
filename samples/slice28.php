@@ -2,14 +2,14 @@
 $n = 'toze';
 $a = $_POST['username'];
 if ($n == 'toze'){
-  $n = '';
+  $a = '';
 }
 if ($n == 'toze') {
-  $n = $_GET['john'];
+  $a = $_GET['john'];
 }
 else {
   $n = htmlentities($n);
 }
 
-echo $n;
+echo $a;
 ?>
