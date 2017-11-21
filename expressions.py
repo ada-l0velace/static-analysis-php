@@ -179,6 +179,7 @@ class NumberExp(Exp):
     def __repr__(self):
         return str(self.value)
 
+
 class BooleanExp(Exp):
     """docstring for BooleanExp"""
 
