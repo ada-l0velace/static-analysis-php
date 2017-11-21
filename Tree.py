@@ -71,18 +71,20 @@ class Tree:
             node.right.tainted = False
             # print node.right, line
 
-            # print node.right.flow_list, 'BEFORE RIGHT'
+            #print node.right.flow_list, 'BEFORE RIGHT'
             self.visit(node.right, pattern, line)
             # print node.right,line
             #print node.right.tainted, node.right, 'FIM DO RIGHT ASSIGN'
             node.left.tainted = node.right.tainted
-            #print node.left.tainted, pattern.get_var_taintness(node.left.name), pattern.name
+            
+            #print node.left.tainted, pattern.get_var_taintness(node.left.name), pattern.name, 'BEFORE LEFT'
             node.left.flow_list = node.right.flow_list
             
-            #print node.left.tainted, pattern.get_var_taintness(node.left.name), pattern.name
-            if pattern.get_var_taintness(node.left.name) != node.left.tainted:
+            #print node.left.tainted, pattern.get_var_taintness(node.left.name), pattern.name, 'AFTER_LEFT'
+            if pattern.get_var_taintness(node.left.name) != node.right.tainted:
                 pattern.set_taintness(node.left.name, node.right.tainted)
                 pattern.set_var_flow(node.left.name, node.right.flow_list)
+            
             node.left.value = node.right.get_value()
             pattern.set_value(node.left.name, node.left.get_value())
             #print str(node.right.tainted) + '|!'
@@ -223,11 +225,12 @@ class Tree:
                 self.visit(param, pattern, line)
                 #print param.flow_list
                 # pattern.get_value(param.name)
-                # print param.flow_list, 'PARAM'
+                #print param.flow_list, 'PARAM'
                 if param.tainted:
                     node.tainted = True
                 flow_list += param.flow_list
             node.flow_list = flow_list
+            #print pattern.flows, 'LIST'
             if pattern.is_sanitization(node.name):
                 node.tainted = False
                 pattern.set_taintness(node.name, False)
@@ -269,6 +272,10 @@ class Tree:
                 else:
 
                     print OKGREEN + "No %s vulnerabilities found in %s" % (pattern.name, str(self.code_lines[node.line_start])) + ENDC
+                    
                     print_flow_list(flow_list, self.code_lines)
+                #for flow in pattern.flows.keys():
+                #    print_flow_list(pattern.flows[flow], self.code_lines)
+                #print 'CALL'
             if type(node) == ExitStm:
                 self.over = True

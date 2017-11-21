@@ -6,7 +6,7 @@ from fabric.fabric_all import *
 class Stm(Node):
     def __init__(self, json, parent):
         super(Stm, self).__init__(json, parent)
-
+        self.breakpoint = False
 
 class BlockStm(Stm):
     def __init__(self, json, parent=None):
