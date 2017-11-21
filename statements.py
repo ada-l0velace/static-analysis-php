@@ -126,6 +126,9 @@ class WhileStm(Stm):
         return self.test.is_valid()
 
     def is_infinite(self, node):
+        if type(self.test) == BooleanExp:
+            return self.test.get_value
+
         Bexp = ["==", ">=", "<=", "!=", "<", ">"]
         if self.is_valid():
             if type(self.test) == NumberExp:
